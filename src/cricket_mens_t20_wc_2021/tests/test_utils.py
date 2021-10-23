@@ -1,6 +1,6 @@
 import unittest
 
-from gh_template_py import _utils
+from cricket_mens_t20_wc_2021 import _utils
 
 
 class TestCase(unittest.TestCase):

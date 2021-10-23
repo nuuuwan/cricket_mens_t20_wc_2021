@@ -2,7 +2,7 @@
 
 import setuptools
 
-DIST_NAME = 'gh_template_py'
+DIST_NAME = 'cricket_mens_t20_wc_2021'
 version = '1.0.0'
 
 setuptools.setup(

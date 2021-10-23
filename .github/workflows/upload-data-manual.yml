@@ -27,7 +27,7 @@ jobs:
     - name: Run - Upload Data
       run: |
         export PYTHONPATH="$PYTHONPATH:./src"
-        python src/gh_template_py/upload_data.py
+        python src/cricket_mens_t20_wc_2021/upload_data.py
 
     - name: Checkout repo branch data
       uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
       run: |
         git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
         git config --global user.name "${{ secrets.GIT_USER_NAME }}"
-        cp /tmp/gh_template_py.* .
+        cp /tmp/cricket_mens_t20_wc_2021.* .
         echo "* $(date)" >> update.log
         git add .
         git commit -m "Updated data $(date)"
