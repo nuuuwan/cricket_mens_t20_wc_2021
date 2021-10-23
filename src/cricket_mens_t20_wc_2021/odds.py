@@ -3,18 +3,18 @@ from utils import timex, tsv
 ODDS_FILE = 'src/cricket_mens_t20_wc_2021/data/odds.csv'
 
 STARTING_ODDS = {
-    'IND': 0.31,
-    'ENG': 0.19,
-    'AUS': 0.12,
-    'WI': 0.11,
-    'NZ': 0.10,
-    'PAK': 0.09,
-    'SA': 0.03,
-    'SL': 0.02,
-    'BAN': 0.02,
-    'AFG': 0.02,
-    'SCO': 0.00,
-    'NAM': 0.00,
+    'IND': 11/27,
+    'ENG': 1/4,
+    'AUS': 1/6,
+    'WI': 1/7,
+    'NZ': 2/15,
+    'PAK': 5/43,
+    'SA': 1/25,
+    'SL': 1/50,
+    'BAN': 1/50,
+    'AFG': 1/50,
+    'SCO': 1/1000,
+    'NAM': 1/1500,
 }
 
 
