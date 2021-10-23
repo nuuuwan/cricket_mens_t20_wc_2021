@@ -78,10 +78,12 @@ def get_winning_team(semi_finals_teams):
 
 
 def simulate_monte_carlo():
-    N_MONTE = 1000
+    N_MONTE = 100000
     team_to_semi_n = {}
     team_to_winner_n = {}
     for m in range(0, N_MONTE):
+        if m % 10000 == 0:
+            print(m, team_to_winner_n)
         outcomes = simulate()
         group_to_team_to_points = build_points_table(outcomes)
         semi_finals_teams = get_semifinals_teams(group_to_team_to_points)
@@ -89,6 +91,7 @@ def simulate_monte_carlo():
         for team in semi_finals_teams:
             team_to_semi_n[team] = team_to_semi_n.get(team, 0) + 1
         team_to_winner_n[winner] = team_to_winner_n.get(winner, 0) + 1
+
     sorted_team_semi_p = list(
         map(
             lambda x: [x[0], x[1] / N_MONTE],
