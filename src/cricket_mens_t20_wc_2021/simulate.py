@@ -2,12 +2,17 @@ import random
 
 from cricket_mens_t20_wc_2021._constants import GROUP_1, GROUP_2
 from cricket_mens_t20_wc_2021._utils import log, to_hashtag
-from cricket_mens_t20_wc_2021.odds import load_odds_historical_index
+from cricket_mens_t20_wc_2021.odds import (load_odds_historical_index,
+                                           load_single_odds_historical_index)
 from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
 
-def simulate_match(odds_index, team_1, team_2):
-    p1 = odds_index.get(team_1, {}).get(team_2, 0.5)
+def simulate_match(odds_index, single_odds_index, team_1, team_2):
+    p1 = odds_index.get(team_1, {}).get(team_2, None)
+    if p1 is None:
+        p1 = single_odds_index[team_1] / (
+            single_odds_index[team_1] + single_odds_index[team_2]
+        )
 
     # HACK! Namibia
     if team_1 == 'NAM':
@@ -20,7 +25,7 @@ def simulate_match(odds_index, team_1, team_2):
         return 2
 
 
-def simulate_group_stage(odds_index):
+def simulate_group_stage(odds_index, single_odds_index):
     match_list = load_agenda()
     outcomes = []
     for match in match_list:
@@ -30,7 +35,9 @@ def simulate_group_stage(odds_index):
 
         # if no winner, simulate
         if not winner:
-            winner = simulate_match(odds_index, team_1, team_2)
+            winner = simulate_match(
+                odds_index, single_odds_index, team_1, team_2
+            )
 
         outcome = {
             'team_1': team_1,
@@ -89,32 +96,35 @@ def winner_to_team(team_1, team_2, winner):
     return 'No Result'
 
 
-def simulate_knowckout_stage(odds_index, semi_finals_teams):
+def simulate_knowckout_stage(odds_index, single_odds_index, semi_finals_teams):
     sf11, sf22, sf21, sf12 = semi_finals_teams
-    winner_sf1 = simulate_match(odds_index, sf11, sf12)
-    winner_sf2 = simulate_match(odds_index, sf21, sf22)
+    winner_sf1 = simulate_match(odds_index, single_odds_index, sf11, sf12)
+    winner_sf2 = simulate_match(odds_index, single_odds_index, sf21, sf22)
 
     f1 = winner_to_team(sf11, sf12, winner_sf1)
     f2 = winner_to_team(sf21, sf22, winner_sf2)
 
-    winner_f = simulate_match(odds_index, f1, f2)
+    winner_f = simulate_match(odds_index, single_odds_index, f1, f2)
     winning_team = winner_to_team(f1, f2, winner_f)
     return winning_team
 
 
 def simulate_monte_carlo():
     odds_index = load_odds_historical_index()
-    N_MONTE = 100000
+    single_odds_index = load_single_odds_historical_index()
+    N_MONTE = 10_000
     team_to_semi_n = {}
     team_to_winner_n = {}
     for m in range(0, N_MONTE):
-        if m % 1000 == 0:
+        if m % 1_000 == 0:
             log.info(f'{m}/{N_MONTE} simulation')
-            outcomes = simulate_group_stage(odds_index)
 
+        outcomes = simulate_group_stage(odds_index, single_odds_index)
         group_to_team_to_points = build_points_table(outcomes)
         semi_finals_teams = get_semifinals_teams(group_to_team_to_points)
-        winner = simulate_knowckout_stage(odds_index, semi_finals_teams)
+        winner = simulate_knowckout_stage(
+            odds_index, single_odds_index, semi_finals_teams
+        )
 
         for team in semi_finals_teams:
             team_to_semi_n[team] = team_to_semi_n.get(team, 0) + 1
@@ -122,7 +132,7 @@ def simulate_monte_carlo():
 
     sorted_team_semi_p = list(
         map(
-            lambda x: [x[0], x[1] / N_MONTE],
+            lambda x: [x[0], x[1] / N_MONTE ],
             sorted(team_to_semi_n.items(), key=lambda x: -x[1]),
         )
     )

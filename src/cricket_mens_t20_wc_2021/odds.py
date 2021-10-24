@@ -1,7 +1,7 @@
-import os
 import math
+import os
 
-from utils import tsv, timex
+from utils import timex, tsv
 from utils.cache import cache
 
 from cricket_mens_t20_wc_2021 import historical
@@ -82,5 +82,31 @@ def load_odds_historical_index():
         result_index[team_1][team_2] = p_1
     return result_index
 
+
+@cache(CACHE_NAME, CACHE_TIMEOUT)
+def load_single_odds_historical_index():
+    odds_historical_list = tsv.read(ODDS_HISTORICAL_FILE)
+    team_to_n_total = {}
+    team_to_n_wins = {}
+    for d in odds_historical_list:
+        team_1 = d['team_1']
+        n_total = (float)(d['n_total'])
+        n_1 = (float)(d['n_1'])
+        if team_1 not in team_to_n_total:
+            team_to_n_total[team_1] = 0
+            team_to_n_wins[team_1] = 0
+        team_to_n_total[team_1] += 1
+        team_to_n_wins[team_1] += n_1 / n_total
+
+    single_odds = {}
+    for team, n_total in team_to_n_total.items():
+        n_1 = team_to_n_wins[team]
+        single_odds[team] = n_1 / n_total
+    return single_odds
+
+
 if __name__ == '__main__':
-    store_odds_historical()
+    # store_odds_historical()
+    # print(load_single_odds_historical_index())
+    for team_2, p1 in load_odds_historical_index()['SL'].items():
+        print(team_2, p1)
