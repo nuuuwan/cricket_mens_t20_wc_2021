@@ -20,3 +20,6 @@ SHORT_NAME_TO_NAME = {
 
 GROUP_1 = ['AUS', 'ENG', 'SA', 'WI', 'BAN', 'SL']
 GROUP_2 = ['AFG', 'IND', 'NZ', 'PAK', 'SCO', 'NAM']
+WC_TEAMS = GROUP_1 + GROUP_2
+
+DIR_DATA = 'src/cricket_mens_t20_wc_2021/data'
