@@ -9,8 +9,10 @@ log = logging.getLogger('cricket_mens_t20_wc_2021')
 
 LONG_TO_SHORT_MAP = {}
 
+
 def to_hashtag(short_name):
     return '#' + SHORT_NAME_TO_NAME[short_name].replace(' ', '')
+
 
 def long_to_short_name(long_name):
     if long_name not in LONG_TO_SHORT_MAP:
@@ -18,9 +20,13 @@ def long_to_short_name(long_name):
         if len(words) == 1:
             short_name = long_name[:3].upper()
         else:
-            short_name = ''.join(list(map(
-                lambda word: word[0].upper(),
-                words,
-            )))
+            short_name = ''.join(
+                list(
+                    map(
+                        lambda word: word[0].upper(),
+                        words,
+                    )
+                )
+            )
         LONG_TO_SHORT_MAP[long_name] = short_name
     return LONG_TO_SHORT_MAP[long_name]
