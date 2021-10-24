@@ -1,9 +1,13 @@
 import random
 
-from cricket_mens_t20_wc_2021._constants import GROUP_1, GROUP_2
+import matplotlib.pyplot as plt
+
+from cricket_mens_t20_wc_2021._constants import GROUP_1, GROUP_2, TEAM_TO_COLOR
 from cricket_mens_t20_wc_2021._utils import log, to_hashtag
-from cricket_mens_t20_wc_2021.odds import (load_odds_historical_index,
-                                           load_single_odds_historical_index)
+from cricket_mens_t20_wc_2021.odds import (
+    load_odds_historical_index,
+    load_single_odds_historical_index,
+)
 from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
 
@@ -132,7 +136,7 @@ def simulate_monte_carlo():
 
     sorted_team_semi_p = list(
         map(
-            lambda x: [x[0], x[1] / N_MONTE ],
+            lambda x: [x[0], x[1] / N_MONTE],
             sorted(team_to_semi_n.items(), key=lambda x: -x[1]),
         )
     )
@@ -145,10 +149,13 @@ def simulate_monte_carlo():
     return sorted_team_semi_p, sorted_team_winner_p
 
 
-if __name__ == '__main__':
+def simulate_and_describe():
     sorted_team_semi_p, sorted_team_winner_p = simulate_monte_carlo()
+    labels = []
+    sizes = []
+    colors = []
+    others_size = 0
     for label, sorted_team_x_p in [
-        ['P(Semi-Finals)', sorted_team_semi_p],
         ['P(Winning)', sorted_team_winner_p],
     ]:
         print('-' * 32)
@@ -157,4 +164,34 @@ if __name__ == '__main__':
         for team, p in sorted_team_x_p:
             hash_name = to_hashtag(team)
             print(f'{p:.0%} {hash_name}')
+
+            if p > 0.025:
+                labels.append(hash_name)
+                sizes.append(p)
+                colors.append(TEAM_TO_COLOR[team])
+            else:
+                others_size += p
+
+        if others_size > 0:
+            labels.append('')
+            sizes.append(others_size)
+            colors.append('gray')
         print('...')
+
+    # build chart
+    fig1, ax1 = plt.subplots()
+    _, texts, auto_texts = ax1.pie(
+        sizes,
+        labels=labels,
+        colors=colors,
+        autopct='%1.0f%%',
+        shadow=True, startangle=90,
+    )
+    for i, text in enumerate(texts):
+        if text.get_text() == '#NewZealand':
+            auto_texts[i].set_color('white')
+    plt.show()
+
+
+if __name__ == '__main__':
+    simulate_and_describe()

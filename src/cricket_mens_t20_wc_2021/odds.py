@@ -5,8 +5,11 @@ from utils import timex, tsv
 from utils.cache import cache
 
 from cricket_mens_t20_wc_2021 import historical
-from cricket_mens_t20_wc_2021._constants import (CACHE_NAME, CACHE_TIMEOUT,
-                                                 DIR_DATA)
+from cricket_mens_t20_wc_2021._constants import (
+    CACHE_NAME,
+    CACHE_TIMEOUT,
+    DIR_DATA,
+)
 from cricket_mens_t20_wc_2021._utils import log
 
 ODDS_HISTORICAL_FILE = os.path.join(DIR_DATA, 'odds.historical.tsv')

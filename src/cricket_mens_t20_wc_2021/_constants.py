@@ -23,3 +23,20 @@ GROUP_2 = ['AFG', 'IND', 'NZ', 'PAK', 'SCO', 'NAM']
 WC_TEAMS = GROUP_1 + GROUP_2
 
 DIR_DATA = 'src/cricket_mens_t20_wc_2021/data'
+
+TEAM_TO_COLOR = {
+    'IND': 'lightblue',
+    'ENG': 'silver',
+    'AUS': 'yellow',
+    'WI': 'maroon',
+
+    'NZ': 'black',
+    'PAK': 'green',
+    'SA': 'green',
+    'SL': 'darkblue',
+
+    'BAN': 'green',
+    'AFG': 'blue',
+    'SCO': 'blue',
+    'NAM': 'blue',
+}
