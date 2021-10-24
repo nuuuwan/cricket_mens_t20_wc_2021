@@ -88,6 +88,7 @@ def winner_to_team(team_1, team_2, winner):
         return team_2
     return 'No Result'
 
+
 def simulate_knowckout_stage(odds_index, semi_finals_teams):
     sf11, sf22, sf21, sf12 = semi_finals_teams
     winner_sf1 = simulate_match(odds_index, sf11, sf12)
