@@ -1,6 +1,7 @@
 import os
+import math
 
-from utils import tsv
+from utils import tsv, timex
 from utils.cache import cache
 
 from cricket_mens_t20_wc_2021 import historical
@@ -9,6 +10,7 @@ from cricket_mens_t20_wc_2021._constants import (CACHE_NAME, CACHE_TIMEOUT,
 from cricket_mens_t20_wc_2021._utils import log
 
 ODDS_HISTORICAL_FILE = os.path.join(DIR_DATA, 'odds.historical.tsv')
+CURRENT_UT = timex.get_unixtime()
 
 
 def store_odds_historical():
@@ -18,6 +20,11 @@ def store_odds_historical():
         team_1 = match['team_1']
         team_2 = match['team_2']
         result = (int)(match['result'])
+        date_id = match['date_id']
+        ut = timex.parse_time(date_id, '%Y%m%d')
+        d_ut = CURRENT_UT - ut
+        d_ut_years = d_ut / timex.SECONDS_IN.YEAR
+        w = 1 / math.pow(2, d_ut_years)
 
         if result == 1:
             team_win = team_1
@@ -38,7 +45,7 @@ def store_odds_historical():
         if team_win not in result_index[team_los]:
             result_index[team_los][team_win] = 0
 
-        result_index[team_win][team_los] += 1
+        result_index[team_win][team_los] += w
 
     odds_historical_list = []
     for team_1, team_2_to_n in result_index.items():
@@ -62,7 +69,7 @@ def store_odds_historical():
     log.info(f'Wrote odds_historical to {ODDS_HISTORICAL_FILE}')
 
 
-@cache(CACHE_NAME + 'v1', CACHE_TIMEOUT)
+@cache(CACHE_NAME + 'v2', CACHE_TIMEOUT)
 def load_odds_historical_index():
     odds_historical_list = tsv.read(ODDS_HISTORICAL_FILE)
     result_index = {}
@@ -74,3 +81,6 @@ def load_odds_historical_index():
             result_index[team_1] = {}
         result_index[team_1][team_2] = p_1
     return result_index
+
+if __name__ == '__main__':
+    store_odds_historical()
