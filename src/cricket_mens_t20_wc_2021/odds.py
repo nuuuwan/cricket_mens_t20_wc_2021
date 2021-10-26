@@ -3,13 +3,23 @@ import os
 
 from utils import timex, tsv
 
-from cricket_mens_t20_wc_2021 import historical
-from cricket_mens_t20_wc_2021 import wc_agenda
+from cricket_mens_t20_wc_2021 import historical, wc_agenda
 from cricket_mens_t20_wc_2021._constants import DIR_DATA
 from cricket_mens_t20_wc_2021._utils import log
 
 ODDS_HISTORICAL_FILE = os.path.join(DIR_DATA, 'odds.historical.tsv')
 CURRENT_UT = timex.get_unixtime()
+
+
+def get_p1(odds_index, single_odds_index, team_1, team_2):
+    p1 = odds_index.get(team_1, {}).get(team_2, None)
+    p1x = single_odds_index[team_1] / (
+        single_odds_index[team_1] + single_odds_index[team_2]
+    )
+    if p1 is None:
+        return p1x
+    PRIOR = 0.2
+    return p1 * (1 - PRIOR) + PRIOR * p1x
 
 
 def dedupe(match_list):
