@@ -4,6 +4,7 @@ import os
 from utils import timex, tsv
 
 from cricket_mens_t20_wc_2021 import historical
+from cricket_mens_t20_wc_2021 import wc_agenda
 from cricket_mens_t20_wc_2021._constants import DIR_DATA
 from cricket_mens_t20_wc_2021._utils import log
 
@@ -11,45 +12,60 @@ ODDS_HISTORICAL_FILE = os.path.join(DIR_DATA, 'odds.historical.tsv')
 CURRENT_UT = timex.get_unixtime()
 
 
+def dedupe(match_list):
+    match_index = {}
+    for match in match_list:
+        match_id = match['date_id'] + match['team_1'] + match['team_2']
+        match_index[match_id] = match
+    return sorted(match_index.values(), key=lambda match: match['date_id'])
+
+
 def store_odds_historical():
-    match_list = historical.load_matches_for_wc_teams()
-    result_index = {}
+    match_list1 = historical.load_matches_for_wc_teams()
+    match_list2 = wc_agenda.load_agenda()
+
+    match_list = dedupe(match_list1 + match_list2)
+
+    winner_index = {}
     for match in match_list:
         team_1 = match['team_1']
         team_2 = match['team_2']
-        result = (int)(match['result'])
+        if match['winner'] == '':
+            continue
+        winner = (int)(match['winner'])
         date_id = match['date_id']
+
         ut = timex.parse_time(date_id, '%Y%m%d')
         d_ut = CURRENT_UT - ut
         d_ut_years = d_ut / timex.SECONDS_IN.YEAR
         HALF_LIFE_IN_YEARS = 1
         w = 1 / math.pow(2, d_ut_years / HALF_LIFE_IN_YEARS)
 
-        if result == 1:
+        if winner == 1:
             team_win = team_1
             team_los = team_2
-        elif result == 2:
+        elif winner == 2:
             team_win = team_2
             team_los = team_1
         else:
             continue
 
-        if team_win not in result_index:
-            result_index[team_win] = {}
-        if team_los not in result_index:
-            result_index[team_los] = {}
+        if team_win not in winner_index:
+            winner_index[team_win] = {}
+        if team_los not in winner_index:
+            winner_index[team_los] = {}
 
-        if team_los not in result_index[team_win]:
-            result_index[team_win][team_los] = 0
-        if team_win not in result_index[team_los]:
-            result_index[team_los][team_win] = 0
+        if team_los not in winner_index[team_win]:
+            winner_index[team_win][team_los] = 0
+        if team_win not in winner_index[team_los]:
+            winner_index[team_los][team_win] = 0
 
-        result_index[team_win][team_los] += w
+        winner_index[team_win][team_los] += w
 
     odds_historical_list = []
-    for team_1, team_2_to_n in result_index.items():
+    for team_1, team_2_to_n in winner_index.items():
         for team_2, n_1 in team_2_to_n.items():
-            n_2 = result_index[team_2][team_1]
+            n_2 = winner_index[team_2][team_1]
             n_total = n_1 + n_2
             p_1 = (n_1) / (n_total)
             p_2 = 1 - p_1
@@ -70,15 +86,15 @@ def store_odds_historical():
 
 def load_odds_historical_index():
     odds_historical_list = tsv.read(ODDS_HISTORICAL_FILE)
-    result_index = {}
+    winner_index = {}
     for d in odds_historical_list:
         team_1 = d['team_1']
         team_2 = d['team_2']
         p_1 = (float)(d['p_1'])
-        if team_1 not in result_index:
-            result_index[team_1] = {}
-        result_index[team_1][team_2] = p_1
-    return result_index
+        if team_1 not in winner_index:
+            winner_index[team_1] = {}
+        winner_index[team_1][team_2] = p_1
+    return winner_index
 
 
 def load_single_odds_historical_index():

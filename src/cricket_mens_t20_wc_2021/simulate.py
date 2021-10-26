@@ -338,7 +338,10 @@ def draw_chart_p_winning(sorted_team_winner_p, title):
     if sum(sizes) > 1.1:
         plt.margins(y=0.2)
 
-        plt.gca().bar(x=labels, height=sizes, color=colors)
+        sizes_p = list(map(lambda size: size * 100, sizes))
+
+        bars = plt.gca().bar(x=labels, height=sizes_p, color=colors)
+        plt.gca().bar_label(bars, fmt='%.0f%%')
 
         plt.annotate(
             f'* Based on {N_MONTE:,} Monte Carlo Simulations and time-weighted history of match results',
@@ -357,7 +360,7 @@ def draw_chart_p_winning(sorted_team_winner_p, title):
         )
 
         plt.gca().yaxis.set_major_formatter(
-            FuncFormatter(lambda y, _: '{:.0%}'.format(y))
+            FuncFormatter(lambda y, _: '{:.0f}%%'.format(y))
         )
 
     else:
@@ -619,7 +622,6 @@ def draw_sl_path(sorted_final_table_id_n):
     print(sl_scens)
     n_sl_scens = len(sl_scens)
     print(n_sl_scens)
-
 
 if __name__ == '__main__':
     odds_index = load_odds_historical_index()

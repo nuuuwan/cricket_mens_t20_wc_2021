@@ -30,17 +30,17 @@ def parse_cells(cell_values):
     team_1 = long_to_short_name(team_1_long)
     team_2 = long_to_short_name(team_2_long)
 
-    result = 0
+    winner = 0
     if team_1_long in cell_values[4]:
-        result = 1
+        winner = 1
     elif team_2_long in cell_values[4]:
-        result = 2
+        winner = 2
 
     return {
         'date_id': date_id,
         'team_1': team_1,
         'team_2': team_2,
-        'result': result,
+        'winner': winner,
     }
 
 
