@@ -2,13 +2,23 @@ import json
 import random
 
 from cricket_mens_t20_wc_2021._constants import GROUP_1, GROUP_2, GROUPS
-from cricket_mens_t20_wc_2021._utils import log
-from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import \
-    draw_chart_lineups
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
-    draw_chart_p_winning
-from cricket_mens_t20_wc_2021.odds import (get_p1, load_odds_historical_index,
-                                           load_single_odds_historical_index)
+from cricket_mens_t20_wc_2021._utils import log, get_group
+from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import (
+    draw_cut_on_outcome,
+)
+from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
+    draw_chart_p_winning,
+)
+from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import (
+    draw_chart_lineups,
+)
+
+draw_chart_lineups
+from cricket_mens_t20_wc_2021.odds import (
+    get_p1,
+    load_odds_historical_index,
+    load_single_odds_historical_index,
+)
 from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
 N_MONTE = 100_000
@@ -213,7 +223,7 @@ def simulate_monte_carlo(odds_index, single_odds_index):
     sorted_team_semi_p = list(
         map(
             lambda x: [x[0], x[1] / N_MONTE],
-            sorted(team_to_semi_n.items(), key=lambda x: -x[1]),
+            sorted(team_to_semi_n.items(), key=lambda x: -x[1] + get_group(x[0]) * N_MONTE * 10),
         )
     )
     sorted_team_winner_p = list(
@@ -297,5 +307,6 @@ if __name__ == '__main__':
         single_odds_index,
     )
 
-    draw_chart_p_winning(sorted_team_semi_p, 'Reaching the Semis')
-    draw_chart_p_winning(sorted_team_winner_p, 'Winning')
+    draw_chart_p_winning({'': sorted_team_semi_p}, 'Reaching the Semis')
+    draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning')
+    draw_cut_on_outcome(outcomes_list, semi_finals_teams_list)

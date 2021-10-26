@@ -2,12 +2,18 @@
 
 import logging
 
-from cricket_mens_t20_wc_2021._constants import SHORT_NAME_TO_NAME
+from cricket_mens_t20_wc_2021._constants import SHORT_NAME_TO_NAME, GROUP_1
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('cricket_mens_t20_wc_2021')
 
 LONG_TO_SHORT_MAP = {}
+
+
+def get_group(team):
+    if team in GROUP_1:
+        return 1
+    return 2
 
 
 def to_hashtag(short_name):
