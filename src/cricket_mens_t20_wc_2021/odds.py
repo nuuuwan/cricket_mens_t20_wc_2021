@@ -51,7 +51,7 @@ def store_odds_historical():
         for team_2, n_1 in team_2_to_n.items():
             n_2 = result_index[team_2][team_1]
             n_total = n_1 + n_2
-            p_1 = (n_1)  / (n_total)
+            p_1 = (n_1) / (n_total)
             p_2 = 1 - p_1
             odds_historical_list.append(
                 {

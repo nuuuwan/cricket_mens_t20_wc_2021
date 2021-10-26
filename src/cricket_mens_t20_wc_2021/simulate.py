@@ -3,6 +3,8 @@ import random
 import json
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+
 
 from utils import timex
 
@@ -35,8 +37,7 @@ def get_p1(odds_index, single_odds_index, team_1, team_2):
     if p1 is None:
         return p1x
     PRIOR = 0.2
-    return p1 * (1  - PRIOR) + PRIOR * p1x
-
+    return p1 * (1 - PRIOR) + PRIOR * p1x
 
 
 def simulate_match(odds_index, single_odds_index, team_1, team_2):
@@ -139,7 +140,7 @@ def simulate_knockout_stage(odds_index, single_odds_index, semi_finals_teams):
     return [f1, f2], winning_team
 
 
-def simulate_monte_carlo(odds_index,single_odds_index ):
+def simulate_monte_carlo(odds_index, single_odds_index):
     team_to_semi_n = {}
     team_to_winner_n = {}
     group_to_table_id_to_n = {}
@@ -179,7 +180,6 @@ def simulate_monte_carlo(odds_index,single_odds_index ):
                     group_to_team_to_total_points[group][team] = 0
                 group_to_team_to_total_points[group][team] += points
 
-
         semi_finals_teams = get_semifinals_teams(group_to_team_to_points)
         table_id1 = json.dumps([semi_finals_teams[0], semi_finals_teams[3]])
         table_id2 = json.dumps([semi_finals_teams[2], semi_finals_teams[1]])
@@ -206,19 +206,22 @@ def simulate_monte_carlo(odds_index,single_odds_index ):
             team_to_semi_n[team] = team_to_semi_n.get(team, 0) + 1
         team_to_winner_n[winner] = team_to_winner_n.get(winner, 0) + 1
 
-
-    group_to_team_to_avg_points =  dict(
+    group_to_team_to_avg_points = dict(
         list(
             map(
                 lambda x: [
                     x[0],
-                    dict(list(map(
-                        lambda y: [y[0], y[1] / N_MONTE],
-                        sorted(
-                            x[1].items(),
-                            key=lambda x: -x[1],
-                        ),
-                    ))),
+                    dict(
+                        list(
+                            map(
+                                lambda y: [y[0], y[1] / N_MONTE],
+                                sorted(
+                                    x[1].items(),
+                                    key=lambda x: -x[1],
+                                ),
+                            )
+                        )
+                    ),
                 ],
                 group_to_team_to_total_points.items(),
             )
@@ -283,11 +286,17 @@ def simulate_monte_carlo(odds_index,single_odds_index ):
     )
 
 
-def draw_chart_p_winning(sorted_team_winner_p):
+def draw_chart_p_winning(sorted_team_winner_p, title):
     labels = []
     sizes = []
     colors = []
     others_size = 0
+
+    if title == 'Winning':
+        OTHER_LIMIT = 0.05
+    else:
+        OTHER_LIMIT = 0.0
+
     for label, sorted_team_x_p in [
         ['P(Winning)', sorted_team_winner_p],
     ]:
@@ -295,11 +304,8 @@ def draw_chart_p_winning(sorted_team_winner_p):
         print(label)
         print('-' * 32)
         for team, p in sorted_team_x_p:
-            hash_name = to_long_name(team)
-            print(f'{p:.0%} {hash_name}')
-
-            if p > 0.05:
-                labels.append(hash_name)
+            if p > OTHER_LIMIT:
+                labels.append(team)
                 sizes.append(p)
                 colors.append(TEAM_TO_COLOR[team])
             else:
@@ -323,51 +329,77 @@ def draw_chart_p_winning(sorted_team_winner_p):
     )
     date_str = timex.format_time(timex.get_unixtime(), '%B %d, %Y')
     plt.annotate(
-        f'Probability of Winning (as of {date_str})*',
+        f'Probability of {title} (as of {date_str})*',
         (0.5, 0.91),
         xycoords='figure fraction',
         ha='center',
         fontsize=15,
     )
+    if sum(sizes) > 1.1:
+        plt.margins(y=0.2)
 
-    plt.annotate(
-        f'* Based on {N_MONTE:,} Monte Carlo Simulations and time-weighted history of match results',
-        (0.5, 0.09),
-        xycoords='figure fraction',
-        ha='center',
-        fontsize=6,
-    )
+        plt.gca().bar(x=labels, height=sizes, color=colors)
 
-    plt.annotate(
-        f'Visualization & Analysis by @nuuuwan',
-        (0.5, 0.04),
-        xycoords='figure fraction',
-        ha='center',
-        fontsize=9,
-    )
+        plt.annotate(
+            f'* Based on {N_MONTE:,} Monte Carlo Simulations and time-weighted history of match results',
+            (0.87, 0.8),
+            xycoords='figure fraction',
+            ha='right',
+            fontsize=6,
+        )
 
-    _, texts, auto_texts = plt.gca().pie(
-        sizes,
-        labels=labels,
-        colors=colors,
-        autopct='%1.0f%%',
-        startangle=90,
-        normalize=True,
-    )
-    for i, text in enumerate(texts):
-        if text.get_text() in list(
-            map(
-                lambda team: to_long_name(team),
-                WHITE_FORE_TEAMS,
-            )
-        ):
-            auto_texts[i].set_color('white')
-        size = sizes[i]
-        font_size = min(18, 96 * size)
-        auto_texts[i].set_fontsize(font_size)
-        texts[i].set_fontsize(font_size)
+        plt.annotate(
+            f'Visualization & Analysis by @nuuuwan',
+            (0.87, 0.75),
+            xycoords='figure fraction',
+            ha='right',
+            fontsize=9,
+        )
 
-    image_file = '/tmp/cricket_mens_t20_wc_2021.pwin.png'
+        plt.gca().yaxis.set_major_formatter(
+            FuncFormatter(lambda y, _: '{:.0%}'.format(y))
+        )
+
+    else:
+        _, texts, auto_texts = plt.pie(
+            sizes,
+            labels=labels,
+            colors=colors,
+            autopct='%1.0f%%',
+            startangle=90,
+            normalize=True,
+        )
+        for i, text in enumerate(texts):
+            if text.get_text() in list(
+                map(
+                    lambda team: to_long_name(team),
+                    WHITE_FORE_TEAMS,
+                )
+            ):
+                auto_texts[i].set_color('white')
+            size = sizes[i]
+            font_size = max(6, min(24, 36 * size))
+            auto_texts[i].set_fontsize(font_size)
+            texts[i].set_fontsize(font_size)
+
+        plt.annotate(
+            f'* Based on {N_MONTE:,} Monte Carlo Simulations and time-weighted history of match results',
+            (0.5, 0.09),
+            xycoords='figure fraction',
+            ha='center',
+            fontsize=6,
+        )
+
+        plt.annotate(
+            f'Visualization & Analysis by @nuuuwan',
+            (0.5, 0.04),
+            xycoords='figure fraction',
+            ha='center',
+            fontsize=9,
+        )
+
+    title_str = title.replace(' ', '').lower()
+    image_file = f'/tmp/cricket_mens_t20_wc_2021.{title_str}.png'
     fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
     os.system(f'open -a firefox {image_file}')
 
@@ -571,17 +603,32 @@ def draw_chart_lineups(
 
     plt.axis('off')
 
-    image_file = '/tmp/cricket_mens_t20_wc_2021.lineup.png'
+    image_file = '/tmp/cricket_mens_t20_wc_2021.group_stage.png'
     fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
     os.system(f'open -a firefox {image_file}')
 
     plt.close()
 
 
+def draw_sl_path(sorted_final_table_id_n):
+    def has_team_in_top2(table_id, team):
+        table = json.loads(table_id)
+        return team in table[:2]
+
+    sl_scens = list(
+        filter(
+            lambda x: has_team_in_top2(x[0], 'SL'),
+            group_to_sorted_table_id_n[1],
+        )
+    )
+    print(sl_scens)
+    n_sl_scens = len(sl_scens)
+    print(n_sl_scens)
+
+
 if __name__ == '__main__':
     odds_index = load_odds_historical_index()
     single_odds_index = load_single_odds_historical_index()
-
 
     (
         group_to_team_to_avg_points,
@@ -595,8 +642,6 @@ if __name__ == '__main__':
         single_odds_index,
     )
 
-    draw_chart_p_winning(sorted_team_winner_p)
-
     draw_chart_lineups(
         group_to_team_to_avg_points,
         group_to_sorted_table_id_n,
@@ -605,3 +650,6 @@ if __name__ == '__main__':
         odds_index,
         single_odds_index,
     )
+
+    draw_chart_p_winning(sorted_team_semi_p, 'Reaching the Semis')
+    draw_chart_p_winning(sorted_team_winner_p, 'Winning')
