@@ -34,7 +34,7 @@ def get_p1(odds_index, single_odds_index, team_1, team_2):
     )
     if p1 is None:
         return p1x
-    PRIOR = 0.0
+    PRIOR = 0.2
     return p1 * (1  - PRIOR) + PRIOR * p1x
 
 
