@@ -20,7 +20,7 @@ from cricket_mens_t20_wc_2021.odds import (
 )
 from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
-N_MONTE = 10_000
+N_MONTE = 30_000
 
 DPI_IMAGE_RESOLUTION = 300
 
@@ -41,10 +41,11 @@ def simulate_match(odds_index, single_odds_index, team_1, team_2):
     p1 = get_p1(odds_index, single_odds_index, team_1, team_2)
 
     # HACK! Namibia
-    # if team_1 == 'NAM':
-    #     return 2
-    # if team_2 == 'NAM':
-    #     return 1
+    if random.random() < 1.1:
+        if team_1 == 'NAM':
+            return 2
+        if team_2 == 'NAM':
+            return 1
 
     if p1 > random.random():
         return 1
@@ -303,7 +304,7 @@ def draw_chart_p_winning(sorted_team_winner_p):
                 others_size += p
 
         if others_size > 0:
-            labels.append('All Others')
+            labels.append('Others')
             sizes.append(others_size)
             colors.append('gray')
         print('...')
@@ -349,7 +350,7 @@ def draw_chart_p_winning(sorted_team_winner_p):
         colors=colors,
         autopct='%1.0f%%',
         startangle=90,
-        normalize=False,
+        normalize=True,
     )
     for i, text in enumerate(texts):
         if text.get_text() in list(
@@ -359,6 +360,10 @@ def draw_chart_p_winning(sorted_team_winner_p):
             )
         ):
             auto_texts[i].set_color('white')
+        size = sizes[i]
+        font_size = min(18, 96 * size)
+        auto_texts[i].set_fontsize(font_size)
+        texts[i].set_fontsize(font_size)
 
     image_file = '/tmp/cricket_mens_t20_wc_2021.pwin.png'
     fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
