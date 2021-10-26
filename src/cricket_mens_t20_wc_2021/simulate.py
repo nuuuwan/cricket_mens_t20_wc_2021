@@ -41,7 +41,7 @@ def simulate_match(odds_index, single_odds_index, team_1, team_2):
     p1 = get_p1(odds_index, single_odds_index, team_1, team_2)
 
     # HACK! Namibia
-    if random.random() < 1.1:
+    if random.random() < 0.95:
         if team_1 == 'NAM':
             return 2
         if team_2 == 'NAM':
