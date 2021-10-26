@@ -130,5 +130,5 @@ def load_single_odds_historical_index():
 
 if __name__ == '__main__':
     store_odds_historical()
-    for team_2, p1 in load_odds_historical_index()['IND'].items():
+    for team_2, p1 in load_odds_historical_index()['SL'].items():
         print(team_2, p1)
