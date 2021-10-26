@@ -11,7 +11,11 @@ LONG_TO_SHORT_MAP = {}
 
 
 def to_hashtag(short_name):
-    return '#' + SHORT_NAME_TO_NAME[short_name].replace(' ', '')
+    return '#' + to_long_name(short_name).replace(' ', '')
+
+
+def to_long_name(short_name):
+    return SHORT_NAME_TO_NAME[short_name]
 
 
 def long_to_short_name(long_name):

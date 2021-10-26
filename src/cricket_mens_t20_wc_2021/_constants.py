@@ -1,8 +1,5 @@
 """Constants."""
 
-CACHE_NAME = 'cricket_mens_t20_wc_2021'
-CACHE_TIMEOUT = 3600
-
 SHORT_NAME_TO_NAME = {
     'IND': 'India',
     'ENG': 'England',
@@ -18,6 +15,8 @@ SHORT_NAME_TO_NAME = {
     'NAM': 'Namibia',
 }
 
+GROUPS = [1, 2]
+
 GROUP_1 = ['AUS', 'ENG', 'SA', 'WI', 'BAN', 'SL']
 GROUP_2 = ['AFG', 'IND', 'NZ', 'PAK', 'SCO', 'NAM']
 WC_TEAMS = GROUP_1 + GROUP_2
@@ -25,18 +24,21 @@ WC_TEAMS = GROUP_1 + GROUP_2
 DIR_DATA = 'src/cricket_mens_t20_wc_2021/data'
 
 TEAM_TO_COLOR = {
-    'IND': 'lightblue',
-    'ENG': 'silver',
-    'AUS': 'yellow',
-    'WI': 'maroon',
-
-    'NZ': 'black',
-    'PAK': 'green',
-    'SA': 'green',
-    'SL': 'darkblue',
-
-    'BAN': 'green',
-    'AFG': 'blue',
-    'SCO': 'blue',
-    'NAM': 'blue',
+    'IND': '#1F399A',
+    'ENG': '#FE0129',
+    'AUS': '#E5E044',
+    'WI': '#A13953',
+    'NZ': '#14181B',
+    'PAK': '#00A478',
+    'SA': '#187C2B',
+    'SL': '#000080',
+    'BAN': '#015A48',
+    'AFG': '#0664AE',
+    'SCO': '#9F3BB4',
+    'NAM': '#97DDFC',
 }
+
+WHITE_FORE_TEAMS = [
+    'NZ',
+    'IND',
+]
