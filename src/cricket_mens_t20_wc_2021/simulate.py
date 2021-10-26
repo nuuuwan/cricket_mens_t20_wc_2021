@@ -24,7 +24,7 @@ from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
 N_MONTE = 100_000
 
-DPI_IMAGE_RESOLUTION = 300
+DPI_IMAGE_RESOLUTION = 600
 
 # plt.rcParams['font.sans-serif'] = "Arial"
 
@@ -370,12 +370,7 @@ def draw_chart_p_winning(sorted_team_winner_p, title):
             normalize=True,
         )
         for i, text in enumerate(texts):
-            if text.get_text() in list(
-                map(
-                    lambda team: to_long_name(team),
-                    WHITE_FORE_TEAMS,
-                )
-            ):
+            if text.get_text() in WHITE_FORE_TEAMS:
                 auto_texts[i].set_color('white')
             size = sizes[i]
             font_size = max(6, min(24, 36 * size))

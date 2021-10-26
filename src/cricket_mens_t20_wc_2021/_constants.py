@@ -41,4 +41,5 @@ TEAM_TO_COLOR = {
 WHITE_FORE_TEAMS = [
     'NZ',
     'IND',
+    'SL',
 ]
