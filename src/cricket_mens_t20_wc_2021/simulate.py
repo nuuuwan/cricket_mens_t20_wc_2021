@@ -29,11 +29,13 @@ DPI_IMAGE_RESOLUTION = 300
 
 def get_p1(odds_index, single_odds_index, team_1, team_2):
     p1 = odds_index.get(team_1, {}).get(team_2, None)
+    p1x = single_odds_index[team_1] / (
+        single_odds_index[team_1] + single_odds_index[team_2]
+    )
     if p1 is None:
-        p1 = single_odds_index[team_1] / (
-            single_odds_index[team_1] + single_odds_index[team_2]
-        )
-    return p1
+        return p1x
+    PRIOR = 0.2    
+    return p1 * (1  - PRIOR) + PRIOR * p1x
 
 
 
