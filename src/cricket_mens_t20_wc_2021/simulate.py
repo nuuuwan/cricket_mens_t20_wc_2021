@@ -125,12 +125,15 @@ def simulate_monte_carlo(odds_index, single_odds_index):
     semi_to_table_id_to_n = {}
     final_table_id_to_n = {}
     group_to_team_to_total_points = {}
+    outcomes_list = []
+    semi_finals_teams_list = []
 
     for m in range(0, N_MONTE):
         if m % 1_000 == 0:
             log.info(f'{m}/{N_MONTE} simulation')
 
         outcomes = simulate_group_stage(odds_index, single_odds_index)
+        outcomes_list.append(outcomes)
         group_to_team_to_points = build_points_table(outcomes)
 
         for group in GROUPS:
@@ -159,6 +162,7 @@ def simulate_monte_carlo(odds_index, single_odds_index):
                 group_to_team_to_total_points[group][team] += points
 
         semi_finals_teams = get_semifinals_teams(group_to_team_to_points)
+        semi_finals_teams_list.append(semi_finals_teams)
         table_id1 = json.dumps([semi_finals_teams[0], semi_finals_teams[3]])
         table_id2 = json.dumps([semi_finals_teams[2], semi_finals_teams[1]])
 
@@ -261,6 +265,8 @@ def simulate_monte_carlo(odds_index, single_odds_index):
         group_to_sorted_table_id_n,
         semi_to_sorted_table_id_n,
         sorted_final_table_id_n,
+        outcomes_list,
+        semi_finals_teams_list,
     )
 
 
@@ -275,6 +281,8 @@ if __name__ == '__main__':
         group_to_sorted_table_id_n,
         semi_to_sorted_table_id_n,
         sorted_final_table_id_n,
+        outcomes_list,
+        semi_finals_teams_list,
     ) = simulate_monte_carlo(
         odds_index,
         single_odds_index,

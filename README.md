@@ -28,3 +28,4 @@
   *  [2021-10-26 06:08PM] merge
   *  [2021-10-26 06:19PM] Added charts folder
   *  [2021-10-26 06:20PM] Print SL odds
+  *  [2021-10-26 06:31PM] Save outcomes and semifinal teams
