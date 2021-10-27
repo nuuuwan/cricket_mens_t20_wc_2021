@@ -1,6 +1,6 @@
 import os
 
-from utils import tsv, timex
+from utils import timex, tsv
 
 from cricket_mens_t20_wc_2021._constants import DIR_DATA
 
@@ -19,33 +19,47 @@ def load_agenda():
 
     return list(map(clean, tsv.read(AGENDA_FILE)))
 
+
 def load_agenda_completed():
-    return list(filter(
-        lambda match: match['winner'] in [0, 1, 2],
-        load_agenda(),
-    ))
+    return list(
+        filter(
+            lambda match: match['winner'] in [0, 1, 2],
+            load_agenda(),
+        )
+    )
+
 
 def get_last_match_no():
     agenda = load_agenda_completed()
-    return max(list(map(
-        lambda match: match['match_no'],
-        agenda,
-    )))
+    return max(
+        list(
+            map(
+                lambda match: match['match_no'],
+                agenda,
+            )
+        )
+    )
 
 
 def get_matches_by_days_delta(days_delta):
-    date_id = timex.get_date_id(timex.get_unixtime() + timex.SECONDS_IN.DAY * days_delta)
-    return list(filter(
-        lambda match: match['date_id'] == date_id,
-        load_agenda(),
-    ))
+    date_id = timex.get_date_id(
+        timex.get_unixtime() + timex.SECONDS_IN.DAY * days_delta
+    )
+    return list(
+        filter(
+            lambda match: match['date_id'] == date_id,
+            load_agenda(),
+        )
+    )
 
 
 def get_yesterdays_matches():
     return get_matches_by_days_delta(-1)
 
+
 def get_todays_matches():
     return get_matches_by_days_delta(0)
+
 
 if __name__ == '__main__':
     print(get_last_match_no())

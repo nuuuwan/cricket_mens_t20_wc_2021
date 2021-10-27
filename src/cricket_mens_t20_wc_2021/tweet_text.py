@@ -1,6 +1,9 @@
 from utils import timex
+
 from cricket_mens_t20_wc_2021._utils import to_hashtag
-from cricket_mens_t20_wc_2021.wc_agenda import get_last_match_no, get_yesterdays_matches, get_todays_matches
+from cricket_mens_t20_wc_2021.wc_agenda import (get_last_match_no,
+                                                get_todays_matches,
+                                                get_yesterdays_matches)
 
 
 def format_match(match):
@@ -16,12 +19,13 @@ def format_match(match):
         return 'No Result'
     return f'{team_2_str} vs. {team_1_str}'
 
+
 def tweet_text():
     match_no = get_last_match_no()
     date_str = timex.format_time(timex.get_unixtime(), '%b %d')
     yesterdays_matches = get_yesterdays_matches()
     todays_matches = get_todays_matches()
-    n_todays_matches =  len(todays_matches)
+    n_todays_matches = len(todays_matches)
 
     blurb_yesterday = '\n'.join(
         list(map(format_match, yesterdays_matches)),
@@ -32,7 +36,6 @@ def tweet_text():
     )
 
     _break = '-' * 32
-
 
     return f'''
 
@@ -70,7 +73,21 @@ def tweet_text():
 
 {_break}
 
+5/ CAVEATS & CODE
+
+The data used for thse #T20WorldCup predictions are sparse and noisy.
+Hence, many pontifications are likely to change.
+
+You can find the code at
+https://github.com/nuuuwan/cricket_mens_t20_wc_2021.
+Feel free to fork or comment or report issues.
+
+@T20WorldCup
+
+{_break}
+
     '''
+
 
 if __name__ == '__main__':
     print(tweet_text())

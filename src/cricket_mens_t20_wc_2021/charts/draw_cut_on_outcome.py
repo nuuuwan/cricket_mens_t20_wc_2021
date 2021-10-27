@@ -1,11 +1,12 @@
-from cricket_mens_t20_wc_2021._constants import GROUP_1
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
-    draw_chart_p_winning,
-)
+from cricket_mens_t20_wc_2021._constants import WC_TEAMS
+from cricket_mens_t20_wc_2021._utils import get_group
+from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
+    draw_chart_p_winning
 
-from cricket_mens_t20_wc_2021._utils import log, get_group
 
 def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match):
+    n = len(outcomes_list)
+
     def get_split(outcomes):
         outcome = outcomes[i_match]
         team_1 = outcome['team_1']
@@ -24,22 +25,31 @@ def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match):
 
     split_to_team_to_semis_n = {}
     split_to_n = {}
-    for outcomes, semi_finals_teams, split in zip(
+    CURRENT_SPLIT = 'Pre-Match'
+    for outcomes, semi_finals_teams, split0 in zip(
         outcomes_list, semi_finals_teams_list, splits
     ):
-        if split not in split_to_team_to_semis_n:
-            split_to_team_to_semis_n[split] = {}
-            split_to_n[split] = 0
-        split_to_n[split] += 1
-        for team in semi_finals_teams:
-            if team not in split_to_team_to_semis_n[split]:
-                split_to_team_to_semis_n[split][team] = 0
-            split_to_team_to_semis_n[split][team] += 1
+        for split in [split0, CURRENT_SPLIT]:
+            if split not in split_to_team_to_semis_n:
+                split_to_team_to_semis_n[split] = dict(
+                    list(map(lambda x: [x, 0], WC_TEAMS))
+                )
+                split_to_n[split] = 0
+            split_to_n[split] += 1
+
+            for team in semi_finals_teams:
+                split_to_team_to_semis_n[split][team] += 1
+
     split_to_sorted_team_semi_p = dict(
         list(
             map(
                 lambda x: [
-                    x[0],
+                    (
+                        'If %s (P =%4.2g%%)'
+                        % (x[0], split_to_n[x[0]] * 100.0 / n)
+                    )
+                    if (x[0] != CURRENT_SPLIT)
+                    else CURRENT_SPLIT,
                     sorted(
                         list(
                             map(
@@ -54,6 +64,6 @@ def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match):
             )
         )
     )
-    print(split_to_sorted_team_semi_p)
-
-    draw_chart_p_winning(split_to_sorted_team_semi_p, 'Reaching the Semis', f'semis_{i_match}')
+    draw_chart_p_winning(
+        split_to_sorted_team_semi_p, 'Reaching the Semis', f'semis_{i_match}'
+    )

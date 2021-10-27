@@ -177,7 +177,7 @@ def draw_chart_lineups(
     fig.patches.extend(circles)
 
     plt.annotate(
-        'ICC Men\'s T20 World Cup - 2021',
+        '2021 ICC Men\'s T20 World Cup',
         (0.5, 0.97),
         xycoords='figure fraction',
         ha='center',
@@ -185,7 +185,7 @@ def draw_chart_lineups(
     )
     date_str = timex.format_time(timex.get_unixtime(), '%b %d')
     plt.annotate(
-        f'Most Likely Outcomes ({date_str})*',
+        f'Most Likely Outcomes* · {date_str}',
         (0.5, 0.91),
         xycoords='figure fraction',
         ha='center',

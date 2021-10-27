@@ -1,25 +1,20 @@
 import json
 import random
 
-from cricket_mens_t20_wc_2021._constants import GROUP_1, GROUP_2, GROUPS
-from cricket_mens_t20_wc_2021._utils import log, get_group
-from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import (
-    draw_cut_on_outcome,
-)
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
-    draw_chart_p_winning,
-)
-from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import (
-    draw_chart_lineups,
-)
+from cricket_mens_t20_wc_2021._constants import (GROUP_1, GROUP_2, GROUPS,
+                                                 WC_TEAMS)
+from cricket_mens_t20_wc_2021._utils import get_group, log
+from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import \
+    draw_chart_lineups
+from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
+    draw_chart_p_winning
+from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import \
+    draw_cut_on_outcome
+from cricket_mens_t20_wc_2021.odds import (get_p1, load_odds_historical_index,
+                                           load_single_odds_historical_index)
+from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
 draw_chart_lineups
-from cricket_mens_t20_wc_2021.odds import (
-    get_p1,
-    load_odds_historical_index,
-    load_single_odds_historical_index,
-)
-from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
 N_MONTE = 100_000
 
@@ -129,8 +124,8 @@ def simulate_knockout_stage(odds_index, single_odds_index, semi_finals_teams):
 
 
 def simulate_monte_carlo(odds_index, single_odds_index):
-    team_to_semi_n = {}
-    team_to_winner_n = {}
+    team_to_semi_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
+    team_to_winner_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
     group_to_table_id_to_n = {}
     semi_to_table_id_to_n = {}
     final_table_id_to_n = {}
@@ -195,8 +190,8 @@ def simulate_monte_carlo(odds_index, single_odds_index):
         final_table_id_to_n[table_id] += 1
 
         for team in semi_finals_teams:
-            team_to_semi_n[team] = team_to_semi_n.get(team, 0) + 1
-        team_to_winner_n[winner] = team_to_winner_n.get(winner, 0) + 1
+            team_to_semi_n[team] += 1
+        team_to_winner_n[winner] += 1
 
     group_to_team_to_avg_points = dict(
         list(
@@ -223,7 +218,10 @@ def simulate_monte_carlo(odds_index, single_odds_index):
     sorted_team_semi_p = list(
         map(
             lambda x: [x[0], x[1] / N_MONTE],
-            sorted(team_to_semi_n.items(), key=lambda x: -x[1] + get_group(x[0]) * N_MONTE * 10),
+            sorted(
+                team_to_semi_n.items(),
+                key=lambda x: -x[1] + get_group(x[0]) * N_MONTE * 10,
+            ),
         )
     )
     sorted_team_winner_p = list(
@@ -307,7 +305,9 @@ if __name__ == '__main__':
         single_odds_index,
     )
 
-    draw_chart_p_winning({'': sorted_team_semi_p}, 'Reaching the Semis', 'semis')
+    draw_chart_p_winning(
+        {'': sorted_team_semi_p}, 'Reaching the Semis', 'semis'
+    )
     draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning', 'winning')
     for i_match in [7, 8]:
         draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match)
