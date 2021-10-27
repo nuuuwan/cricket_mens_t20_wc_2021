@@ -7,9 +7,14 @@ from cricket_mens_t20_wc_2021._utils import log, get_group
 
 def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list):
     def get_split(outcomes):
-        if outcomes[5]['winner'] == 1:
-            return 'SA Win'
-        return 'WI Win'
+        i_match = 6
+        outcome = outcomes[i_match]
+        team_1 = outcome['team_1']
+        team_2 = outcome['team_2']
+        winner = outcome['winner']
+        if winner == 1:
+            return f'{team_1} Win'
+        return f'{team_2} Win'
 
     splits = list(
         map(

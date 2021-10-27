@@ -43,7 +43,7 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title):
         ax.spines['bottom'].set_visible(False)
         ax.spines['left'].set_visible(False)
         plt.subplots_adjust(bottom=0.2, top=0.8)
-        ax.set_title(split, fontsize=6, loc='left', y=0.5)
+        ax.set_title(split, fontsize=6, loc='left', y=0.5, ha='left')
 
 
     fig.set_size_inches(8, 4.5)
