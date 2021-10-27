@@ -40,7 +40,7 @@ def tweet_text():
 
 #T20WorldCup PREDICTIONS - {date_str} (after match {match_no})
 
-1/ PROBABILITY OF REACHING SEMIS
+1/ PROBABILITY OF REACHING SEMIS - #T20WorldCup
 
 {blurb_yesterday}
 
