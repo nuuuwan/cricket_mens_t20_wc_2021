@@ -6,7 +6,6 @@ from utils import timex
 
 from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
 from cricket_mens_t20_wc_2021._utils import to_long_name
-from cricket_mens_t20_wc_2021.odds import get_p1
 
 DPI_IMAGE_RESOLUTION = 600
 CONFIDENCE = 0.9
@@ -19,10 +18,15 @@ def draw_chart_lineups(
     sorted_final_table_id_n,
     odds_index,
     single_odds_index,
+    sorted_team_semi_p,
+    sorted_team_final_p,
 ):
     fig = plt.gcf()
     plt.gca()
     fig.set_size_inches(8, 4.5)
+
+    team_to_semi_p = dict(sorted_team_semi_p)
+    team_to_final_p = dict(sorted_team_final_p)
 
     GROUP_PADDING = 0.15
     GROUP_HEIGHT = 1 - GROUP_PADDING * 2
@@ -100,14 +104,10 @@ def draw_chart_lineups(
         sorted_table_id, _ = sorted_table_id_n[0]
         sorted_teams = json.loads(sorted_table_id)
 
-        team_1, team_2 = sorted_teams
-        p1 = get_p1(odds_index, single_odds_index, team_1, team_2)
-        ps = [p1, 1 - p1]
-
         for i_team, team in enumerate(sorted_teams):
             y_team = y_semi - (1 + i_team) * 0.35 / 7
             team_str = to_long_name(team)
-            p = ps[i_team]
+            p = team_to_semi_p[team]
             team_str += f' ({p:.0%})'
 
             plt.annotate(
@@ -144,14 +144,10 @@ def draw_chart_lineups(
     sorted_table_id, _ = sorted_final_table_id_n[0]
     sorted_teams = json.loads(sorted_table_id)
 
-    team_1, team_2 = sorted_teams
-    p1 = get_p1(odds_index, single_odds_index, team_1, team_2)
-    ps = [p1, 1 - p1]
-
     for i_team, team in enumerate(sorted_teams):
         y_team = y_final - (1 + i_team) * 0.35 / 7
         team_str = to_long_name(team)
-        p = ps[i_team]
+        p = team_to_final_p[team]
         team_str += f' ({p:.0%})'
 
         plt.annotate(
@@ -193,25 +189,25 @@ def draw_chart_lineups(
     plt.annotate(
         f'* Based on {N_MONTE:,} Monte Carlo Simulations'
         + ' and time-weighted history of match results',
-        (0.5, 0.14),
+        (0.35, 0.14),
         xycoords='figure fraction',
-        ha='center',
+        ha='left',
         fontsize=6,
     )
 
     plt.annotate(
-        f'** Group Stage points are {CONFIDENCE:.0%} confidence intervals',
-        (0.5, 0.11),
+        f'** {CONFIDENCE:.0%} confidence intervals for group stage points',
+        (0.35, 0.11),
         xycoords='figure fraction',
-        ha='center',
+        ha='left',
         fontsize=6,
     )
 
     plt.annotate(
-        '*** Percentages in Semi-Finals and Finals are odds of winning',
-        (0.5, 0.08),
+        '*** Probability of reaching stage',
+        (0.35, 0.08),
         xycoords='figure fraction',
-        ha='center',
+        ha='left',
         fontsize=6,
     )
 

@@ -41,3 +41,4 @@
   *  [2021-10-27 01:24PM] Search by match_no
   *  [2021-10-27 01:34PM] Removed checkmarks
   *  [2021-10-27 01:49PM] Various
+  *  [2021-10-27 02:02PM] Changed lineup percentages

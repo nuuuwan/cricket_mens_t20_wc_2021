@@ -125,6 +125,7 @@ def simulate_knockout_stage(odds_index, single_odds_index, semi_finals_teams):
 
 def simulate_monte_carlo(odds_index, single_odds_index):
     team_to_semi_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
+    team_to_final_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
     team_to_winner_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
     group_to_table_id_to_n = {}
     semi_to_table_id_to_n = {}
@@ -196,6 +197,9 @@ def simulate_monte_carlo(odds_index, single_odds_index):
 
         for team in semi_finals_teams:
             team_to_semi_n[team] += 1
+
+        for team in final_teams:
+            team_to_final_n[team] += 1
         team_to_winner_n[winner] += 1
 
     group_to_team_to_avg_points = dict(
@@ -229,6 +233,17 @@ def simulate_monte_carlo(odds_index, single_odds_index):
             ),
         )
     )
+
+    sorted_team_final_p = list(
+        map(
+            lambda x: [x[0], x[1] / N_MONTE],
+            sorted(
+                team_to_final_n.items(),
+                key=lambda x: -x[1] + get_group(x[0]) * N_MONTE * 10,
+            ),
+        )
+    )
+
     sorted_team_winner_p = list(
         map(
             lambda x: [x[0], x[1] / N_MONTE],
@@ -274,6 +289,7 @@ def simulate_monte_carlo(odds_index, single_odds_index):
     return (
         group_to_team_to_avg_points,
         sorted_team_semi_p,
+        sorted_team_final_p,
         sorted_team_winner_p,
         group_to_sorted_table_id_n,
         semi_to_sorted_table_id_n,
@@ -291,6 +307,7 @@ if __name__ == '__main__':
     (
         group_to_team_to_avg_points,
         sorted_team_semi_p,
+        sorted_team_final_p,
         sorted_team_winner_p,
         group_to_sorted_table_id_n,
         semi_to_sorted_table_id_n,
@@ -310,6 +327,8 @@ if __name__ == '__main__':
         sorted_final_table_id_n,
         odds_index,
         single_odds_index,
+        sorted_team_semi_p,
+        sorted_team_final_p,
     )
 
     draw_chart_p_winning(
