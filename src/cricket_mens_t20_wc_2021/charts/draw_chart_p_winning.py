@@ -31,7 +31,7 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
             ax = axes[i_split]
         else:
             ax = axes
-        alpha = 0.2 if 'If' in split else 1.0
+        alpha = 0.2 if 'Pre-Match' in split else 1.0
         bars = ax.bar(x=labels, height=sizes_p, color=colors, alpha=alpha)
 
         ax.bar_label(bars, fmt='%4.2g%%', fontsize=8, alpha=alpha)
@@ -46,7 +46,7 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
         )
 
     fig.set_size_inches(8, 4.5)
-    fig.tight_layout(pad=2.5)
+    fig.tight_layout(pad=2.9)
 
     plt.figtext(
         0.5,
