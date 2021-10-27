@@ -68,9 +68,10 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
         ha='center'
     )
 
-    date_str = timex.format_time(timex.get_unixtime(), '%B %d, %Y')
+    date_str = timex.format_time(timex.get_unixtime(), '%b %d')
     plt.suptitle(
-        'ICC Men\'s T20 World Cup - 2021' + f' - Probability of {title} (as of {date_str})*',
+        'ICC Men\'s T20 World Cup - 2021'
+            + f' - Probability of {title} ({date_str})*',
     )
 
 

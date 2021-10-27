@@ -183,9 +183,9 @@ def draw_chart_lineups(
         ha='center',
         fontsize=9,
     )
-    date_str = timex.format_time(timex.get_unixtime(), '%B %d, %Y')
+    date_str = timex.format_time(timex.get_unixtime(), '%b %d')
     plt.annotate(
-        f'Most Likely Outcomes (as of {date_str})*',
+        f'Most Likely Outcomes ({date_str})*',
         (0.5, 0.91),
         xycoords='figure fraction',
         ha='center',
