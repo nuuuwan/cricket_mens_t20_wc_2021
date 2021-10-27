@@ -8,10 +8,12 @@ def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no):
     n = len(outcomes_list)
 
     def get_split(outcomes):
-        outcome = list(filter(
-            lambda outcome: outcome['match_no'] == match_no,
-            outcomes,
-        ))[0]
+        outcome = list(
+            filter(
+                lambda outcome: outcome['match_no'] == match_no,
+                outcomes,
+            )
+        )[0]
         team_1 = outcome['team_1']
         team_2 = outcome['team_2']
         winner = outcome['winner']

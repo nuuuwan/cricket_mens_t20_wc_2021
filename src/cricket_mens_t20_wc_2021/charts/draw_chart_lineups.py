@@ -64,7 +64,7 @@ def draw_chart_lineups(
             team_str += f' ({points_min} to {points_max})'
 
             if i_team < 2:
-                team_str += ' ✓'
+
                 color = 'black'
             else:
                 color = 'lightgray'
@@ -115,7 +115,7 @@ def draw_chart_lineups(
             team_str += f' ({p:.0%})'
 
             if p > 0.5:
-                team_str += ' ✓'
+
                 color = 'black'
             else:
                 color = 'lightgray'
@@ -163,7 +163,7 @@ def draw_chart_lineups(
         team_str += f' ({p:.0%})'
 
         if p > 0.5:
-            team_str += ' ✓'
+
             color = 'black'
         else:
             color = 'lightgray'

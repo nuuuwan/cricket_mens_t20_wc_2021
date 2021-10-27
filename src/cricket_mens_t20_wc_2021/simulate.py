@@ -12,7 +12,7 @@ from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import \
     draw_cut_on_outcome
 from cricket_mens_t20_wc_2021.odds import (get_p1, load_odds_historical_index,
                                            load_single_odds_historical_index)
-from cricket_mens_t20_wc_2021.wc_agenda import load_agenda, get_todays_matches
+from cricket_mens_t20_wc_2021.wc_agenda import get_todays_matches, load_agenda
 
 draw_chart_lineups
 
