@@ -11,10 +11,11 @@ from cricket_mens_t20_wc_2021.odds import get_p1
 N_MONTE = 100_000
 
 DPI_IMAGE_RESOLUTION = 600
+CONFIDENCE = 0.9
 
 
 def draw_chart_lineups(
-    group_to_team_to_avg_points,
+    group_to_team_to_points_list,
     group_to_sorted_table_id_n,
     semi_to_sorted_table_id_n,
     sorted_final_table_id_n,
@@ -34,8 +35,11 @@ def draw_chart_lineups(
     for group, sorted_table_id_n in group_to_sorted_table_id_n.items():
         i_group = (int)(group)
         y_group = (1 - GROUP_PADDING) - 0.5 * GROUP_HEIGHT * (i_group - 1)
+        group_str = str(group)
+        if i_group == 1:
+            group_str += '**'
         plt.annotate(
-            f'Group {group}',
+            f'Group {group_str}',
             (X_GROUP, y_group),
             xycoords='figure fraction',
             ha='left',
@@ -48,9 +52,16 @@ def draw_chart_lineups(
         for i_team, team in enumerate(sorted_teams):
             y_team = y_group - (1 + i_team) * ITEM_HEIGHT
             team_str = to_long_name(team)
-            avg_points = group_to_team_to_avg_points[group][team]
 
-            team_str += f' ({avg_points:.1f} pts)'
+            points_list = group_to_team_to_points_list[group][team]
+            sorted_points_list = sorted(points_list)
+            n = len(sorted_points_list)
+            i_min = (int)(n * (1 - CONFIDENCE) / 2)
+            i_max = (int)(n * (1 + CONFIDENCE) / 2)
+            points_min = sorted_points_list[i_min]
+            points_max = sorted_points_list[i_max]
+
+            team_str += f' ({points_min} to {points_max})'
 
             if i_team < 2:
                 team_str += ' ✓'
@@ -195,7 +206,15 @@ def draw_chart_lineups(
     plt.annotate(
         f'* Based on {N_MONTE:,} Monte Carlo Simulations'
         + ' and time-weighted history of match results',
-        (0.5, 0.09),
+        (0.5, 0.11),
+        xycoords='figure fraction',
+        ha='center',
+        fontsize=6,
+    )
+
+    plt.annotate(
+        f'** Group Stage points are {CONFIDENCE:.0%} confidence intervals',
+        (0.5, 0.08),
         xycoords='figure fraction',
         ha='center',
         fontsize=6,

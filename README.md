@@ -37,3 +37,4 @@
   *  [2021-10-27 07:14AM] Charts
   *  [2021-10-27 11:46AM] Various
   *  [2021-10-27 12:58PM] Unknown
+  *  [2021-10-27 01:18PM] Added Conf intervals

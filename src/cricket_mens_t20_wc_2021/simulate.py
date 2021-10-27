@@ -132,6 +132,7 @@ def simulate_monte_carlo(odds_index, single_odds_index):
     group_to_team_to_total_points = {}
     outcomes_list = []
     semi_finals_teams_list = []
+    group_to_team_to_points_list = {}
 
     for m in range(0, N_MONTE):
         if m % 1_000 == 0:
@@ -160,11 +161,15 @@ def simulate_monte_carlo(odds_index, single_odds_index):
 
             if group not in group_to_team_to_total_points:
                 group_to_team_to_total_points[group] = {}
+                group_to_team_to_points_list[group] = {}
 
             for team, points in group_to_team_to_points[group].items():
                 if team not in group_to_team_to_total_points[group]:
                     group_to_team_to_total_points[group][team] = 0
+                    group_to_team_to_points_list[group][team] = []
+
                 group_to_team_to_total_points[group][team] += points
+                group_to_team_to_points_list[group][team].append(points)
 
         semi_finals_teams = get_semifinals_teams(group_to_team_to_points)
         semi_finals_teams_list.append(semi_finals_teams)
@@ -275,6 +280,7 @@ def simulate_monte_carlo(odds_index, single_odds_index):
         sorted_final_table_id_n,
         outcomes_list,
         semi_finals_teams_list,
+        group_to_team_to_points_list,
     )
 
 
@@ -291,13 +297,14 @@ if __name__ == '__main__':
         sorted_final_table_id_n,
         outcomes_list,
         semi_finals_teams_list,
+        group_to_team_to_points_list,
     ) = simulate_monte_carlo(
         odds_index,
         single_odds_index,
     )
 
     draw_chart_lineups(
-        group_to_team_to_avg_points,
+        group_to_team_to_points_list,
         group_to_sorted_table_id_n,
         semi_to_sorted_table_id_n,
         sorted_final_table_id_n,
