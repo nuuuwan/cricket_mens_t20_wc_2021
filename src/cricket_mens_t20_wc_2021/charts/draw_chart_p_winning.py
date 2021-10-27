@@ -12,7 +12,9 @@ N_MONTE = 100_000
 DPI_IMAGE_RESOLUTION = 600
 
 
-def draw_chart_p_winning(split_to_sorted_team_semi_p, title):
+def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
+    print(split_to_sorted_team_semi_p)
+
     n_rows = len(split_to_sorted_team_semi_p.keys())
     n_cols = 1
     fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols)
@@ -36,7 +38,7 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title):
             ax = axes
         bars = ax.bar(x=labels, height=sizes_p, color=colors)
 
-        ax.bar_label(bars, fmt='%.0f%%', fontsize=9)
+        ax.bar_label(bars, fmt='%.0f%%', fontsize=8)
         ax.get_yaxis().set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
@@ -72,8 +74,7 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title):
     )
 
 
-    title_str = title.replace(' ', '').lower()
-    image_file = f'/tmp/cricket_mens_t20_wc_2021.{title_str}.png'
+    image_file = f'/tmp/cricket_mens_t20_wc_2021.{file_id}.png'
     fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
     os.system(f'open -a firefox {image_file}')
 

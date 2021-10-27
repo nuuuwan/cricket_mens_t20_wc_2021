@@ -307,6 +307,7 @@ if __name__ == '__main__':
         single_odds_index,
     )
 
-    draw_chart_p_winning({'': sorted_team_semi_p}, 'Reaching the Semis')
-    draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning')
-    draw_cut_on_outcome(outcomes_list, semi_finals_teams_list)
+    draw_chart_p_winning({'': sorted_team_semi_p}, 'Reaching the Semis', 'semis')
+    draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning', 'winning')
+    for i_match in [7, 8]:
+        draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match)
