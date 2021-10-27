@@ -40,3 +40,4 @@
   *  [2021-10-27 01:18PM] Added Conf intervals
   *  [2021-10-27 01:24PM] Search by match_no
   *  [2021-10-27 01:34PM] Removed checkmarks
+  *  [2021-10-27 01:49PM] Various

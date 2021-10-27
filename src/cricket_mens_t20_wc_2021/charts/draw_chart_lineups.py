@@ -4,11 +4,9 @@ import os
 import matplotlib.pyplot as plt
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import TEAM_TO_COLOR
+from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
 from cricket_mens_t20_wc_2021._utils import to_long_name
 from cricket_mens_t20_wc_2021.odds import get_p1
-
-N_MONTE = 100_000
 
 DPI_IMAGE_RESOLUTION = 600
 CONFIDENCE = 0.9
@@ -63,18 +61,13 @@ def draw_chart_lineups(
 
             team_str += f' ({points_min} to {points_max})'
 
-            if i_team < 2:
-
-                color = 'black'
-            else:
-                color = 'lightgray'
             plt.annotate(
                 f'{team_str}',
                 (X_GROUP, y_team),
                 xycoords='figure fraction',
                 ha='left',
-                color=color,
-                fontsize=9,
+                color='black',
+                fontsize=7,
             )
             circles.append(
                 plt.Circle(
@@ -92,8 +85,11 @@ def draw_chart_lineups(
     for semi, sorted_table_id_n in semi_to_sorted_table_id_n.items():
         i_semi = (int)(semi)
         y_semi = (1 - SEMI_PADDING) - 0.5 * SEMI_HEIGHT * (i_semi - 1)
+        semi_str = semi
+        if i_semi == 1:
+            semi_str += '***'
         plt.annotate(
-            f'Semi-Final {semi}',
+            f'Semi-Final {semi_str}',
             (X_SEMI, y_semi),
             xycoords='figure fraction',
             ha='left',
@@ -114,18 +110,13 @@ def draw_chart_lineups(
             p = ps[i_team]
             team_str += f' ({p:.0%})'
 
-            if p > 0.5:
-
-                color = 'black'
-            else:
-                color = 'lightgray'
             plt.annotate(
                 f'{team_str}',
                 (X_SEMI, y_team),
                 xycoords='figure fraction',
                 ha='left',
-                fontsize=9,
-                color=color,
+                fontsize=7,
+                color='black',
             )
             circles.append(
                 plt.Circle(
@@ -148,6 +139,7 @@ def draw_chart_lineups(
         ha='left',
         fontsize=9,
         color='gray',
+        fontweight='bold',
     )
     sorted_table_id, _ = sorted_final_table_id_n[0]
     sorted_teams = json.loads(sorted_table_id)
@@ -162,18 +154,13 @@ def draw_chart_lineups(
         p = ps[i_team]
         team_str += f' ({p:.0%})'
 
-        if p > 0.5:
-
-            color = 'black'
-        else:
-            color = 'lightgray'
         plt.annotate(
             f'{team_str}',
             (X_FINAL, y_team),
             xycoords='figure fraction',
             ha='left',
-            fontsize=9,
-            color=color,
+            fontsize=7,
+            color='black',
         )
         circles.append(
             plt.Circle(
@@ -206,7 +193,7 @@ def draw_chart_lineups(
     plt.annotate(
         f'* Based on {N_MONTE:,} Monte Carlo Simulations'
         + ' and time-weighted history of match results',
-        (0.5, 0.11),
+        (0.5, 0.14),
         xycoords='figure fraction',
         ha='center',
         fontsize=6,
@@ -214,6 +201,14 @@ def draw_chart_lineups(
 
     plt.annotate(
         f'** Group Stage points are {CONFIDENCE:.0%} confidence intervals',
+        (0.5, 0.11),
+        xycoords='figure fraction',
+        ha='center',
+        fontsize=6,
+    )
+
+    plt.annotate(
+        '*** Percentages in Semi-Finals and Finals are odds of winning',
         (0.5, 0.08),
         xycoords='figure fraction',
         ha='center',

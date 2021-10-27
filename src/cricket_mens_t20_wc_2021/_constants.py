@@ -1,5 +1,8 @@
 """Constants."""
 
+N_MONTE = 100_000
+
+
 SHORT_NAME_TO_NAME = {
     'IND': 'India',
     'ENG': 'England',

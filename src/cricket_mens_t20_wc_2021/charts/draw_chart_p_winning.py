@@ -3,9 +3,7 @@ import os
 import matplotlib.pyplot as plt
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import TEAM_TO_COLOR
-
-N_MONTE = 100_000
+from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
 
 DPI_IMAGE_RESOLUTION = 600
 
