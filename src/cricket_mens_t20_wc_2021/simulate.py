@@ -12,7 +12,7 @@ from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import \
     draw_cut_on_outcome
 from cricket_mens_t20_wc_2021.odds import (get_p1, load_odds_historical_index,
                                            load_single_odds_historical_index)
-from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
+from cricket_mens_t20_wc_2021.wc_agenda import load_agenda, get_todays_matches
 
 draw_chart_lineups
 
@@ -46,6 +46,7 @@ def simulate_group_stage(odds_index, single_odds_index):
         team_1 = match['team_1']
         team_2 = match['team_2']
         winner = match['winner']
+        match_no = match['match_no']
 
         # if no winner, simulate
         if not winner:
@@ -54,6 +55,7 @@ def simulate_group_stage(odds_index, single_odds_index):
             )
 
         outcome = {
+            'match_no': match_no,
             'team_1': team_1,
             'team_2': team_2,
             'winner': winner,
@@ -316,5 +318,6 @@ if __name__ == '__main__':
         {'': sorted_team_semi_p}, 'Reaching the Semis', 'semis'
     )
     draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning', 'winning')
-    for i_match in [7, 8]:
-        draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match)
+    for match in get_todays_matches():
+        match_no = match['match_no']
+        draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no)

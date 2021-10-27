@@ -4,11 +4,14 @@ from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
     draw_chart_p_winning
 
 
-def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match):
+def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no):
     n = len(outcomes_list)
 
     def get_split(outcomes):
-        outcome = outcomes[i_match]
+        outcome = list(filter(
+            lambda outcome: outcome['match_no'] == match_no,
+            outcomes,
+        ))[0]
         team_1 = outcome['team_1']
         team_2 = outcome['team_2']
         winner = outcome['winner']
@@ -65,5 +68,5 @@ def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, i_match):
         )
     )
     draw_chart_p_winning(
-        split_to_sorted_team_semi_p, 'Reaching the Semis', f'semis_{i_match}'
+        split_to_sorted_team_semi_p, 'Reaching the Semis', f'semis_{match_no}'
     )
