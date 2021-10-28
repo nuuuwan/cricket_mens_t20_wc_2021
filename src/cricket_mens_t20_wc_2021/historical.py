@@ -69,13 +69,19 @@ def scrape_matches_for_year(year):
     match_file = get_match_file_for_year(year)
     tsv.write(match_file, match_list)
     log.info(f'Scraped {n_match_list} matches for {year} to {match_file}')
-    return match_list
 
 
-def scrape_matches():
+def load_matches_for_year(year):
+    match_file = get_match_file_for_year(year)
+    return tsv.read(match_file)
+
+
+def scrape_matches(backpopulate=False):
     match_list = []
     for year in YEAR_LIST:
-        match_list += scrape_matches_for_year(year)
+        if year == 2021 or backpopulate:
+            scrape_matches_for_year(year)
+        match_list += load_matches_for_year(year)
 
     n_match_list = len(match_list)
     tsv.write(MATCH_FILE, match_list)

@@ -1,3 +1,4 @@
+import os
 from cricket_mens_t20_wc_2021.historical import (
     scrape_matches,
 )
@@ -35,6 +36,9 @@ from cricket_mens_t20_wc_2021.charts.draw_single_team_path import (
 
 
 def run():
+    # cleanup
+    os.system('rm -rf /tmp/cricket_mens_t20_wc_2021.*.png')
+
     # historical
     scrape_matches()
 
@@ -45,7 +49,7 @@ def run():
 
     # betting odds
     store_latest_odds()
-    sorted_team_winner_p = list(
+    sorted_team_winner_oddschecker_p = list(
         map(
             lambda d: [d['team'], d['p']],
             load_latest_odds(),
@@ -54,13 +58,9 @@ def run():
 
     # simulate
     (
-        group_to_team_to_avg_points,
         sorted_team_semi_p,
         sorted_team_final_p,
         sorted_team_winner_p,
-        group_to_sorted_table_id_n,
-        semi_to_sorted_table_id_n,
-        sorted_final_table_id_n,
         outcomes_list,
         semi_finals_teams_list,
         group_to_team_to_points_list,
@@ -91,10 +91,13 @@ def run():
             draw_single_team_path(team, outcomes_list, semi_finals_teams_list)
 
     draw_chart_p_winning(
-        {'': sorted_team_winner_p},
+        {'': sorted_team_winner_oddschecker_p},
         'Winning - oddschecker.com',
         'winning.oddschecker',
     )
+
+    # after
+    os.system('open -a preview /tmp/cricket_mens_t20_wc_2021.*.png')
 
 
 if __name__ == '__main__':

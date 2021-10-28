@@ -1,4 +1,3 @@
-import os
 import statistics
 
 import matplotlib.pyplot as plt
@@ -237,6 +236,5 @@ def draw_chart_lineups(
 
     image_file = '/tmp/cricket_mens_t20_wc_2021.group_stage.png'
     fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
-    os.system(f'open -a firefox {image_file}')
 
     plt.close()

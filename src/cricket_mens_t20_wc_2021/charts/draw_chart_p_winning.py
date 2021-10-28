@@ -1,4 +1,3 @@
-import os
 import matplotlib.pyplot as plt
 from utils import timex
 
@@ -80,6 +79,5 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
 
     image_file = f'/tmp/cricket_mens_t20_wc_2021.{file_id}.png'
     fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
-    os.system(f'open -a firefox {image_file}')
 
     plt.close()

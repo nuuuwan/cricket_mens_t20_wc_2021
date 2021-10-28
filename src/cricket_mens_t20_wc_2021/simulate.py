@@ -1,4 +1,3 @@
-import json
 import random
 
 from cricket_mens_t20_wc_2021._constants import (
@@ -130,9 +129,6 @@ def simulate_monte_carlo(odds_index, single_odds_index):
     team_to_semi_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
     team_to_final_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
     team_to_winner_n = dict(list(map(lambda x: [x, 0], WC_TEAMS)))
-    group_to_table_id_to_n = {}
-    semi_to_table_id_to_n = {}
-    final_table_id_to_n = {}
     group_to_team_to_total_points = {}
     outcomes_list = []
     semi_finals_teams_list = []
@@ -147,22 +143,6 @@ def simulate_monte_carlo(odds_index, single_odds_index):
         group_to_team_to_points = build_points_table(outcomes)
 
         for group in GROUPS:
-            sorted_teams = list(
-                map(
-                    lambda x: x[0],
-                    sorted(
-                        group_to_team_to_points[group].items(),
-                        key=lambda x: -x[1],
-                    ),
-                )
-            )
-            if group not in group_to_table_id_to_n:
-                group_to_table_id_to_n[group] = {}
-            table_id = json.dumps(sorted_teams)
-            if table_id not in group_to_table_id_to_n[group]:
-                group_to_table_id_to_n[group][table_id] = 0
-            group_to_table_id_to_n[group][table_id] += 1
-
             if group not in group_to_team_to_total_points:
                 group_to_team_to_total_points[group] = {}
                 group_to_team_to_points_list[group] = {}
@@ -177,26 +157,10 @@ def simulate_monte_carlo(odds_index, single_odds_index):
 
         semi_finals_teams = get_semifinals_teams(group_to_team_to_points)
         semi_finals_teams_list.append(semi_finals_teams)
-        table_id1 = json.dumps([semi_finals_teams[0], semi_finals_teams[3]])
-        table_id2 = json.dumps([semi_finals_teams[2], semi_finals_teams[1]])
-
-        if '1' not in semi_to_table_id_to_n:
-            semi_to_table_id_to_n = {'1': {}, '2': {}}
-        if table_id1 not in semi_to_table_id_to_n['1']:
-            semi_to_table_id_to_n['1'][table_id1] = 0
-        semi_to_table_id_to_n['1'][table_id1] += 1
-        if table_id2 not in semi_to_table_id_to_n['2']:
-            semi_to_table_id_to_n['2'][table_id2] = 0
-        semi_to_table_id_to_n['2'][table_id2] += 1
 
         final_teams, winner = simulate_knockout_stage(
             odds_index, single_odds_index, semi_finals_teams
         )
-
-        table_id = json.dumps(final_teams)
-        if table_id not in final_table_id_to_n:
-            final_table_id_to_n[table_id] = 0
-        final_table_id_to_n[table_id] += 1
 
         for team in semi_finals_teams:
             team_to_semi_n[team] += 1
@@ -204,28 +168,6 @@ def simulate_monte_carlo(odds_index, single_odds_index):
         for team in final_teams:
             team_to_final_n[team] += 1
         team_to_winner_n[winner] += 1
-
-    group_to_team_to_avg_points = dict(
-        list(
-            map(
-                lambda x: [
-                    x[0],
-                    dict(
-                        list(
-                            map(
-                                lambda y: [y[0], y[1] / N_MONTE],
-                                sorted(
-                                    x[1].items(),
-                                    key=lambda x: -x[1],
-                                ),
-                            )
-                        )
-                    ),
-                ],
-                group_to_team_to_total_points.items(),
-            )
-        )
-    )
 
     sorted_team_semi_p = list(
         map(
@@ -254,49 +196,10 @@ def simulate_monte_carlo(odds_index, single_odds_index):
         )
     )
 
-    group_to_sorted_table_id_n = dict(
-        list(
-            map(
-                lambda x: [
-                    x[0],
-                    sorted(
-                        x[1].items(),
-                        key=lambda x: -x[1],
-                    ),
-                ],
-                group_to_table_id_to_n.items(),
-            )
-        )
-    )
-
-    semi_to_sorted_table_id_n = dict(
-        list(
-            map(
-                lambda x: [
-                    x[0],
-                    sorted(
-                        x[1].items(),
-                        key=lambda x: -x[1],
-                    ),
-                ],
-                semi_to_table_id_to_n.items(),
-            )
-        ),
-    )
-
-    sorted_final_table_id_n = sorted(
-        final_table_id_to_n.items(),
-        key=lambda x: -x[1],
-    )
-
     return (
-        group_to_team_to_avg_points,
         sorted_team_semi_p,
         sorted_team_final_p,
         sorted_team_winner_p,
-        group_to_sorted_table_id_n,
-        semi_to_sorted_table_id_n,
-        sorted_final_table_id_n,
         outcomes_list,
         semi_finals_teams_list,
         group_to_team_to_points_list,

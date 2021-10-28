@@ -1,4 +1,3 @@
-import os
 import matplotlib.pyplot as plt
 from utils import timex
 
@@ -195,6 +194,5 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
 
     image_file = f'/tmp/cricket_mens_t20_wc_2021.path.{team_0}.png'
     fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
-    os.system(f'open -a firefox {image_file}')
 
     plt.close()
