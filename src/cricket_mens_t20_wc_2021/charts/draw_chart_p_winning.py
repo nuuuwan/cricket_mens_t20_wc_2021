@@ -48,14 +48,23 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
     fig.set_size_inches(8, 4.5)
     fig.tight_layout(pad=2.9)
 
-    plt.figtext(
-        0.5,
-        0.05,
-        f'* Based on {N_MONTE:,} Monte Carlo Simulations'
-        + ' and time-weighted history of match results',
-        ha='center',
-        fontsize=6,
-    )
+    if 'oddschecker' in file_id:
+        plt.figtext(
+            0.5,
+            0.05,
+            '* Data from www.oddschecker.com',
+            ha='center',
+            fontsize=6,
+        )
+    else:
+        plt.figtext(
+            0.5,
+            0.05,
+            f'* Based on {N_MONTE:,} Monte Carlo Simulations'
+            + ' and time-weighted history of match results',
+            ha='center',
+            fontsize=6,
+        )
 
     plt.figtext(
         0.5,

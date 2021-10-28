@@ -1,13 +1,14 @@
 import os
-from utils import timex, filex
+
+from utils import filex, timex
 
 from cricket_mens_t20_wc_2021._utils import to_hashtag
 from cricket_mens_t20_wc_2021.wc_agenda import (get_last_match_no,
                                                 get_todays_matches,
                                                 get_yesterdays_matches)
 
-
 TWEET_TEXT_FILE = '/tmp/cricket_mens_t20_wc_2021.tweet.txt'
+
 
 def format_match(match):
     team_1_str = to_hashtag(match['team_1'])
@@ -93,7 +94,6 @@ Feel free to fork or comment or report issues.
 
     filex.write(TWEET_TEXT_FILE, tweet_text)
     os.system(f'open -a atom {TWEET_TEXT_FILE}')
-
 
 
 if __name__ == '__main__':
