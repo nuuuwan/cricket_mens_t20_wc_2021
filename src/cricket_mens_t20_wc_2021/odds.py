@@ -12,14 +12,29 @@ CURRENT_UT = timex.get_unixtime()
 
 
 def get_p1(odds_index, single_odds_index, team_1, team_2):
-    p1 = odds_index.get(team_1, {}).get(team_2, None)
-    p1x = single_odds_index[team_1] / (
+    W_ONE_ON_ONE = 0.9
+    W_SINGLE = 0.1
+    W_NOISE = 0.0
+
+    w_all = 0
+    p_all = 0
+
+    p_single = single_odds_index[team_1] / (
         single_odds_index[team_1] + single_odds_index[team_2]
     )
-    if p1 is None:
-        return p1x
-    PRIOR = 0.2
-    return p1 * (1 - PRIOR) + PRIOR * p1x
+    w_all += W_SINGLE
+    p_all += (W_SINGLE * p_single)
+
+    p_one_on_one = odds_index.get(team_1, {}).get(team_2, None)
+    if p_one_on_one is not None:
+        w_all += W_ONE_ON_ONE
+        p_all += (W_ONE_ON_ONE * p_one_on_one)
+
+    P_NOISE = 0.5
+    w_all += W_NOISE
+    p_all += (W_NOISE * P_NOISE)
+
+    return p_all / w_all
 
 
 def dedupe(match_list):
