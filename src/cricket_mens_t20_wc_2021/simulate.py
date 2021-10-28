@@ -340,20 +340,20 @@ if __name__ == '__main__':
         single_odds_index,
     )
 
-    # draw_chart_lineups(
-    #     group_to_team_to_points_list,
-    #     odds_index,
-    #     single_odds_index,
-    #     sorted_team_semi_p,
-    #     sorted_team_final_p,
-    # )
-    #
-    # draw_chart_p_winning(
-    #     {'': sorted_team_semi_p}, 'Reaching the Semis', 'semis'
-    # )
-    # draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning', 'winning')
-    # for match in get_todays_matches():
-    #     match_no = match['match_no']
-    #     draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no)
+    draw_chart_lineups(
+        group_to_team_to_points_list,
+        odds_index,
+        single_odds_index,
+        sorted_team_semi_p,
+        sorted_team_final_p,
+    )
+
+    draw_chart_p_winning(
+        {'': sorted_team_semi_p}, 'Reaching the Semis', 'semis'
+    )
+    draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning', 'winning')
+    for match in get_todays_matches():
+        match_no = match['match_no']
+        draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no)
 
     draw_single_team_path('SL', outcomes_list, semi_finals_teams_list)
