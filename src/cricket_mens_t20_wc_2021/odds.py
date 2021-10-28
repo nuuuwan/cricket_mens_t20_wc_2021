@@ -12,9 +12,9 @@ CURRENT_UT = timex.get_unixtime()
 
 
 def get_p1(odds_index, single_odds_index, team_1, team_2):
-    W_ONE_ON_ONE = 0.9
-    W_SINGLE = 0.1
-    W_NOISE = 0.0
+    W_ONE_ON_ONE = 8
+    W_SINGLE = 2
+    W_NOISE = 0
 
     w_all = 0
     p_all = 0
