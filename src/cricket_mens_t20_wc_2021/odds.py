@@ -12,9 +12,9 @@ CURRENT_UT = timex.get_unixtime()
 
 
 def get_p1(odds_index, single_odds_index, team_1, team_2):
-    W_ONE_ON_ONE = 8
-    W_SINGLE = 2
-    W_NOISE = 0
+    W_ONE_ON_ONE = 16
+    W_SINGLE = 4
+    W_NOISE = 1
 
     w_all = 0
     p_all = 0
@@ -145,5 +145,5 @@ def load_single_odds_historical_index():
 
 if __name__ == '__main__':
     store_odds_historical()
-    for team_2, p1 in load_odds_historical_index()['SL'].items():
+    for team_2, p1 in load_odds_historical_index()['AUS'].items():
         print(team_2, p1)
