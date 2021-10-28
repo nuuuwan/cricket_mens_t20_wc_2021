@@ -6,9 +6,6 @@ from utils import tsv, www
 
 from cricket_mens_t20_wc_2021._constants import DIR_DATA, WC_TEAMS
 from cricket_mens_t20_wc_2021._utils import long_to_short_name
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
-    draw_chart_p_winning,
-)
 
 ODDS_CHECKER_URL = 'https://www.oddschecker.com/cricket/t20-world-cup/winner'
 BETTING_ODDS_FILE = os.path.join(DIR_DATA, 'betting_odds.tsv')
@@ -66,21 +63,4 @@ def load_latest_odds():
             },
             tsv.read(BETTING_ODDS_FILE),
         )
-    )
-
-
-if __name__ == '__main__':
-    store_latest_odds()
-    sorted_team_winner_p = list(
-        map(
-            lambda d: [d['team'], d['p']],
-            load_latest_odds(),
-        )
-    )
-    print(sorted_team_winner_p)
-
-    draw_chart_p_winning(
-        {'': sorted_team_winner_p},
-        'Winning - oddschecker.com',
-        'winning.oddschecker',
     )

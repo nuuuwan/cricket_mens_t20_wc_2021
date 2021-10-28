@@ -141,9 +141,3 @@ def load_single_odds_historical_index():
         n_1 = team_to_n_wins[team]
         single_odds[team] = n_1 / n_total
     return single_odds
-
-
-if __name__ == '__main__':
-    store_odds_historical()
-    for team_2, p1 in load_odds_historical_index()['AUS'].items():
-        print(team_2, p1)

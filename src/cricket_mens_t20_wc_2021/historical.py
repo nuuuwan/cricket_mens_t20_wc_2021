@@ -102,9 +102,3 @@ def load_matches_for_wc_teams():
             match_list,
         )
     )
-
-
-if __name__ == '__main__':
-    scrape_matches()
-    print(len(load_matches()))
-    print(len(load_matches_for_wc_teams()))
