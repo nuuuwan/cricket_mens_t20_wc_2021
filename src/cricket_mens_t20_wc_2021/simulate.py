@@ -333,9 +333,6 @@ if __name__ == '__main__':
 
     draw_chart_lineups(
         group_to_team_to_points_list,
-        group_to_sorted_table_id_n,
-        semi_to_sorted_table_id_n,
-        sorted_final_table_id_n,
         odds_index,
         single_odds_index,
         sorted_team_semi_p,

@@ -1,5 +1,5 @@
-import json
 import os
+import statistics
 
 import matplotlib.pyplot as plt
 from utils import timex
@@ -13,9 +13,6 @@ CONFIDENCE = 0.9
 
 def draw_chart_lineups(
     group_to_team_to_points_list,
-    group_to_sorted_table_id_n,
-    semi_to_sorted_table_id_n,
-    sorted_final_table_id_n,
     odds_index,
     single_odds_index,
     sorted_team_semi_p,
@@ -34,7 +31,8 @@ def draw_chart_lineups(
     X_GROUP = 0.25
     RADIUS = 0.01
     circles = []
-    for group, sorted_table_id_n in group_to_sorted_table_id_n.items():
+    semi_teams = []
+    for group, team_to_points_list in group_to_team_to_points_list.items():
         i_group = (int)(group)
         y_group = (1 - GROUP_PADDING) - 0.5 * GROUP_HEIGHT * (i_group - 1)
         group_str = str(group)
@@ -49,9 +47,23 @@ def draw_chart_lineups(
             color='gray',
             fontweight='bold',
         )
-        sorted_table_id, _ = sorted_table_id_n[0]
-        sorted_teams = json.loads(sorted_table_id)
-        for i_team, team in enumerate(sorted_teams):
+
+        team_to_points_mean = dict(
+            sorted(
+                list(
+                    map(
+                        lambda x: [x[0], statistics.mean(x[1])],
+                        team_to_points_list.items(),
+                    )
+                ),
+                key=lambda x: -x[1],
+            )
+        )
+        semi_teams += list(team_to_points_mean.keys())[:2]
+
+        for i_team, [team, points_mean] in enumerate(
+            team_to_points_mean.items()
+        ):
             y_team = y_group - (1 + i_team) * ITEM_HEIGHT
             team_str = to_long_name(team)
 
@@ -86,10 +98,14 @@ def draw_chart_lineups(
     SEMI_PADDING = 0.3
     SEMI_HEIGHT = 1 - SEMI_PADDING * 2
     X_SEMI = 0.5
-    for semi, sorted_table_id_n in semi_to_sorted_table_id_n.items():
+    semi_to_teams = {
+        1: [semi_teams[0], semi_teams[3]],
+        2: [semi_teams[2], semi_teams[1]],
+    }
+    for semi, teams in semi_to_teams.items():
         i_semi = (int)(semi)
         y_semi = (1 - SEMI_PADDING) - 0.5 * SEMI_HEIGHT * (i_semi - 1)
-        semi_str = semi
+        semi_str = str(semi)
         if i_semi == 1:
             semi_str += '***'
         plt.annotate(
@@ -101,10 +117,8 @@ def draw_chart_lineups(
             color='gray',
             fontweight='bold',
         )
-        sorted_table_id, _ = sorted_table_id_n[0]
-        sorted_teams = json.loads(sorted_table_id)
 
-        for i_team, team in enumerate(sorted_teams):
+        for i_team, team in enumerate(teams):
             y_team = y_semi - (1 + i_team) * 0.35 / 7
             team_str = to_long_name(team)
             p = team_to_semi_p[team]
@@ -141,10 +155,8 @@ def draw_chart_lineups(
         color='gray',
         fontweight='bold',
     )
-    sorted_table_id, _ = sorted_final_table_id_n[0]
-    sorted_teams = json.loads(sorted_table_id)
-
-    for i_team, team in enumerate(sorted_teams):
+    final_teams = [semi_teams[0], semi_teams[2]]
+    for i_team, team in enumerate(final_teams):
         y_team = y_final - (1 + i_team) * 0.35 / 7
         team_str = to_long_name(team)
         p = team_to_final_p[team]
