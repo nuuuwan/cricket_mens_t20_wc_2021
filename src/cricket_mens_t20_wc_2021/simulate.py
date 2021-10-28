@@ -18,6 +18,10 @@ from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
 from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import (
     draw_cut_on_outcome,
 )
+
+from cricket_mens_t20_wc_2021.charts.draw_single_team_path import (
+    draw_single_team_path,
+)
 from cricket_mens_t20_wc_2021.odds import (
     get_p1,
     load_odds_historical_index,
@@ -52,10 +56,12 @@ def simulate_group_stage(odds_index, single_odds_index):
     match_list = load_agenda()
     outcomes = []
     for match in match_list:
+        date_id = match['date_id']
+        match_no = match['match_no']
         team_1 = match['team_1']
         team_2 = match['team_2']
         winner = match['winner']
-        match_no = match['match_no']
+
 
         # if no winner, simulate
         if not winner:
@@ -64,6 +70,7 @@ def simulate_group_stage(odds_index, single_odds_index):
             )
 
         outcome = {
+            'date_id': date_id,
             'match_no': match_no,
             'team_1': team_1,
             'team_2': team_2,
@@ -333,18 +340,20 @@ if __name__ == '__main__':
         single_odds_index,
     )
 
-    draw_chart_lineups(
-        group_to_team_to_points_list,
-        odds_index,
-        single_odds_index,
-        sorted_team_semi_p,
-        sorted_team_final_p,
-    )
+    # draw_chart_lineups(
+    #     group_to_team_to_points_list,
+    #     odds_index,
+    #     single_odds_index,
+    #     sorted_team_semi_p,
+    #     sorted_team_final_p,
+    # )
+    #
+    # draw_chart_p_winning(
+    #     {'': sorted_team_semi_p}, 'Reaching the Semis', 'semis'
+    # )
+    # draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning', 'winning')
+    # for match in get_todays_matches():
+    #     match_no = match['match_no']
+    #     draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no)
 
-    draw_chart_p_winning(
-        {'': sorted_team_semi_p}, 'Reaching the Semis', 'semis'
-    )
-    draw_chart_p_winning({'': sorted_team_winner_p}, 'Winning', 'winning')
-    for match in get_todays_matches():
-        match_no = match['match_no']
-        draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no)
+    draw_single_team_path('SL', outcomes_list, semi_finals_teams_list)
