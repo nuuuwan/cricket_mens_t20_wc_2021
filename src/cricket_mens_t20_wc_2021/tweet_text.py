@@ -1,10 +1,13 @@
-from utils import timex
+import os
+from utils import timex, filex
 
 from cricket_mens_t20_wc_2021._utils import to_hashtag
 from cricket_mens_t20_wc_2021.wc_agenda import (get_last_match_no,
                                                 get_todays_matches,
                                                 get_yesterdays_matches)
 
+
+TWEET_TEXT_FILE = '/tmp/cricket_mens_t20_wc_2021.tweet.txt'
 
 def format_match(match):
     team_1_str = to_hashtag(match['team_1'])
@@ -20,7 +23,7 @@ def format_match(match):
     return f'{team_2_str} vs. {team_1_str}'
 
 
-def tweet_text():
+def store_tweet_text():
     match_no = get_last_match_no()
     date_str = timex.format_time(timex.get_unixtime(), '%b %d')
     yesterdays_matches = get_yesterdays_matches()
@@ -37,7 +40,7 @@ def tweet_text():
 
     _break = '-' * 32
 
-    return f'''
+    tweet_text = f'''
 
 {_break}
 
@@ -88,6 +91,10 @@ Feel free to fork or comment or report issues.
 
     '''
 
+    filex.write(TWEET_TEXT_FILE, tweet_text)
+    os.system(f'open -a atom {TWEET_TEXT_FILE}')
+
+
 
 if __name__ == '__main__':
-    print(tweet_text())
+    store_tweet_text()
