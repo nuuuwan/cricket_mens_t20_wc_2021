@@ -61,3 +61,4 @@
   *  [2021-10-28 09:13PM] Added pipeline.py
   *  [2021-10-28 09:14PM] Deleted scripts
   *  [2021-10-28 09:28PM] Removed redundent code in simulate
+  *  [2021-10-28 09:33PM] Various Refactoring

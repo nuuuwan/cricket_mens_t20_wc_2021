@@ -23,6 +23,28 @@ def draw_chart_lineups(
     fig = plt.gcf()
     fig.set_size_inches(8, 4.5)
 
+    RADIUS = 0.01
+    circles = []
+
+    def draw_team_label(x, y_team, team, team_str):
+        plt.annotate(
+            f'{team_str}',
+            (x, y_team),
+            xycoords='figure fraction',
+            ha='left',
+            fontsize=7,
+            color='black',
+        )
+        circles.append(
+            plt.Circle(
+                (x - RADIUS * 3, y_team + RADIUS),
+                RADIUS,
+                color=TEAM_TO_COLOR[team],
+                figure=fig,
+                transform=fig.transFigure,
+            )
+        )
+
     team_to_semi_p = dict(sorted_team_semi_p)
     team_to_final_p = dict(sorted_team_final_p)
 
@@ -30,8 +52,6 @@ def draw_chart_lineups(
     GROUP_HEIGHT = 1 - GROUP_PADDING * 2
     ITEM_HEIGHT = GROUP_HEIGHT * 0.5 / 7
     X_GROUP = 0.25
-    RADIUS = 0.01
-    circles = []
     semi_teams = []
     for group, team_to_points_list in group_to_team_to_points_list.items():
         i_group = (int)(group)
@@ -77,24 +97,7 @@ def draw_chart_lineups(
             points_max = sorted_points_list[i_max]
 
             team_str += f' ({points_min} to {points_max})'
-
-            plt.annotate(
-                f'{team_str}',
-                (X_GROUP, y_team),
-                xycoords='figure fraction',
-                ha='left',
-                color='black',
-                fontsize=7,
-            )
-            circles.append(
-                plt.Circle(
-                    (X_GROUP - RADIUS * 3, y_team + RADIUS),
-                    RADIUS,
-                    color=TEAM_TO_COLOR[team],
-                    figure=fig,
-                    transform=fig.transFigure,
-                )
-            )
+            draw_team_label(X_GROUP, y_team, team, team_str)
 
     SEMI_PADDING = 0.3
     SEMI_HEIGHT = 1 - SEMI_PADDING * 2
@@ -124,24 +127,8 @@ def draw_chart_lineups(
             team_str = to_long_name(team)
             p = team_to_semi_p[team]
             team_str += f' ({p:.0%})'
+            draw_team_label(X_SEMI, y_team, team, team_str)
 
-            plt.annotate(
-                f'{team_str}',
-                (X_SEMI, y_team),
-                xycoords='figure fraction',
-                ha='left',
-                fontsize=7,
-                color='black',
-            )
-            circles.append(
-                plt.Circle(
-                    (X_SEMI - RADIUS * 3, y_team + RADIUS),
-                    RADIUS,
-                    color=TEAM_TO_COLOR[team],
-                    figure=fig,
-                    transform=fig.transFigure,
-                )
-            )
     FINAL_PADDING = 0.4
     FINAL_HEIGHT = 1 - FINAL_PADDING * 2
     X_FINAL = 0.75
@@ -162,24 +149,7 @@ def draw_chart_lineups(
         team_str = to_long_name(team)
         p = team_to_final_p[team]
         team_str += f' ({p:.0%})'
-
-        plt.annotate(
-            f'{team_str}',
-            (X_FINAL, y_team),
-            xycoords='figure fraction',
-            ha='left',
-            fontsize=7,
-            color='black',
-        )
-        circles.append(
-            plt.Circle(
-                (X_FINAL - RADIUS * 3, y_team + RADIUS),
-                RADIUS,
-                color=TEAM_TO_COLOR[team],
-                figure=fig,
-                transform=fig.transFigure,
-            )
-        )
+        draw_team_label(X_FINAL, y_team, team, team_str)
 
     fig.patches.extend(circles)
 
