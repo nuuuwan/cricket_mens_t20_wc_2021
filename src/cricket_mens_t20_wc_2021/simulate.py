@@ -27,11 +27,13 @@ from cricket_mens_t20_wc_2021.odds import (
     load_odds_historical_index,
     load_single_odds_historical_index,
 )
-from cricket_mens_t20_wc_2021.wc_agenda import get_todays_matches, load_agenda
+from cricket_mens_t20_wc_2021.wc_agenda import (
+    get_todays_matches,
+    load_agenda,
+    get_yesterdays_matches,
+)
 
 draw_chart_lineups
-
-DPI_IMAGE_RESOLUTION = 600
 
 # plt.rcParams['font.sans-serif'] = "Arial"
 
@@ -61,7 +63,6 @@ def simulate_group_stage(odds_index, single_odds_index):
         team_1 = match['team_1']
         team_2 = match['team_2']
         winner = match['winner']
-
 
         # if no winner, simulate
         if not winner:
@@ -356,4 +357,6 @@ if __name__ == '__main__':
         match_no = match['match_no']
         draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no)
 
-    draw_single_team_path('SL', outcomes_list, semi_finals_teams_list)
+    for match in get_yesterdays_matches():
+        for team in [match['team_1'], match['team_2']]:
+            draw_single_team_path(team, outcomes_list, semi_finals_teams_list)

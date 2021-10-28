@@ -4,7 +4,11 @@ import statistics
 import matplotlib.pyplot as plt
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR, DPI_IMAGE_RESOLUTION
+from cricket_mens_t20_wc_2021._constants import (
+    N_MONTE,
+    TEAM_TO_COLOR,
+    DPI_IMAGE_RESOLUTION,
+)
 from cricket_mens_t20_wc_2021._utils import to_long_name
 
 CONFIDENCE = 0.9
