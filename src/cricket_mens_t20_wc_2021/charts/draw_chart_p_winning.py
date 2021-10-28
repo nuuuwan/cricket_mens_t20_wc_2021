@@ -2,11 +2,9 @@ import os
 import matplotlib.pyplot as plt
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
+from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR, DPI_IMAGE_RESOLUTION
 
-DPI_IMAGE_RESOLUTION = 600
-
-
+ 
 def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
     n_rows = len(split_to_sorted_team_semi_p.keys())
     n_cols = 1

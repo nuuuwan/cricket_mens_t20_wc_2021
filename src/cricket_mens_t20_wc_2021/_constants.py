@@ -1,6 +1,7 @@
 """Constants."""
 
-N_MONTE = 100_000
+N_MONTE = 1000
+DPI_IMAGE_RESOLUTION = 300
 
 
 SHORT_NAME_TO_NAME = {

@@ -4,10 +4,9 @@ import statistics
 import matplotlib.pyplot as plt
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
+from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR, DPI_IMAGE_RESOLUTION
 from cricket_mens_t20_wc_2021._utils import to_long_name
 
-DPI_IMAGE_RESOLUTION = 600
 CONFIDENCE = 0.9
 
 
@@ -19,7 +18,6 @@ def draw_chart_lineups(
     sorted_team_final_p,
 ):
     fig = plt.gcf()
-    plt.gca()
     fig.set_size_inches(8, 4.5)
 
     team_to_semi_p = dict(sorted_team_semi_p)
