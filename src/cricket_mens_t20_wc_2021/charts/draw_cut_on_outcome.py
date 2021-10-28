@@ -1,7 +1,8 @@
 from cricket_mens_t20_wc_2021._constants import WC_TEAMS
 from cricket_mens_t20_wc_2021._utils import get_group
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
-    draw_chart_p_winning
+from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
+    draw_chart_p_winning,
+)
 
 
 def draw_cut_on_outcome(outcomes_list, semi_finals_teams_list, match_no):

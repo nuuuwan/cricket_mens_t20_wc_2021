@@ -1,17 +1,28 @@
 import json
 import random
 
-from cricket_mens_t20_wc_2021._constants import (GROUP_1, GROUP_2, GROUPS,
-                                                 N_MONTE, WC_TEAMS)
+from cricket_mens_t20_wc_2021._constants import (
+    GROUP_1,
+    GROUP_2,
+    GROUPS,
+    N_MONTE,
+    WC_TEAMS,
+)
 from cricket_mens_t20_wc_2021._utils import get_group, log
-from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import \
-    draw_chart_lineups
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
-    draw_chart_p_winning
-from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import \
-    draw_cut_on_outcome
-from cricket_mens_t20_wc_2021.odds import (get_p1, load_odds_historical_index,
-                                           load_single_odds_historical_index)
+from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import (
+    draw_chart_lineups,
+)
+from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
+    draw_chart_p_winning,
+)
+from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import (
+    draw_cut_on_outcome,
+)
+from cricket_mens_t20_wc_2021.odds import (
+    get_p1,
+    load_odds_historical_index,
+    load_single_odds_historical_index,
+)
 from cricket_mens_t20_wc_2021.wc_agenda import get_todays_matches, load_agenda
 
 draw_chart_lineups

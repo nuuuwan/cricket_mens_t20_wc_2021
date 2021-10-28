@@ -6,8 +6,9 @@ from utils import tsv, www
 
 from cricket_mens_t20_wc_2021._constants import DIR_DATA, WC_TEAMS
 from cricket_mens_t20_wc_2021._utils import long_to_short_name
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
-    draw_chart_p_winning
+from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
+    draw_chart_p_winning,
+)
 
 ODDS_CHECKER_URL = 'https://www.oddschecker.com/cricket/t20-world-cup/winner'
 BETTING_ODDS_FILE = os.path.join(DIR_DATA, 'betting_odds.tsv')

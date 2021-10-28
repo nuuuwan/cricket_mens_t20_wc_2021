@@ -3,9 +3,11 @@ import os
 from utils import filex, timex
 
 from cricket_mens_t20_wc_2021._utils import to_hashtag
-from cricket_mens_t20_wc_2021.wc_agenda import (get_last_match_no,
-                                                get_todays_matches,
-                                                get_yesterdays_matches)
+from cricket_mens_t20_wc_2021.wc_agenda import (
+    get_last_match_no,
+    get_todays_matches,
+    get_yesterdays_matches,
+)
 
 TWEET_TEXT_FILE = '/tmp/cricket_mens_t20_wc_2021.tweet.txt'
 
@@ -47,7 +49,7 @@ def store_tweet_text():
 
 #T20WorldCup PREDICTIONS - {date_str} (after match {match_no})
 
-1/ PROBABILITY OF REACHING SEMIS - #T20WorldCup
+1/ P(Reaching the Semis)
 
 {blurb_yesterday}
 
@@ -55,13 +57,13 @@ def store_tweet_text():
 
 {_break}
 
-2/ PROBABILITY OF WINNING - #T20WorldCup
+2/ P(Winning) #T20WorldCup
 
 @T20WorldCup
 
 {_break}
 
-3/ TODAY'S #T20WorldCup MATCHES
+3/ Today's #T20WorldCup Matches
 
 {n_todays_matches} matches today.
 
@@ -71,22 +73,31 @@ def store_tweet_text():
 
 {_break}
 
-4/ MOST LIKELY OUTCOMES - #T20WorldCup
+4/ Most Likely #T20WorldCup Outcomes
 
 @T20WorldCup
 
 {_break}
 
-5/ CAVEATS & CODE
+5/ @OddsChecker - #T20WorldCup Betting Odds
 
-The data used for thse #T20WorldCup predictions are sparse and noisy.
-Hence, many pontifications are likely to change.
+As you know, I'm not a betting man, but here's what the betting markets say about P(Winning).
+
+@T20WorldCup
+
+{_break}
+
+6/ CAVEATS & CODE
+
+⚠️ The data used for these #T20WorldCup predictions are sparse and noisy.
+Hence, some predictions are likely to change.
 
 You can find the code at
 https://github.com/nuuuwan/cricket_mens_t20_wc_2021.
-Feel free to fork or comment or report issues.
 
-@T20WorldCup
+Feel free to fork/comment/report issues.
+
+@T20WorldCup @GitHub @ThePSF
 
 {_break}
 
