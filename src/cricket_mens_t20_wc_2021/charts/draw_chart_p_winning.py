@@ -1,3 +1,4 @@
+import os
 import matplotlib.pyplot as plt
 from utils import timex
 
@@ -7,8 +8,6 @@ DPI_IMAGE_RESOLUTION = 600
 
 
 def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
-    print(split_to_sorted_team_semi_p)
-
     n_rows = len(split_to_sorted_team_semi_p.keys())
     n_cols = 1
     fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols)

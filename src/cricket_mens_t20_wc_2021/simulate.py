@@ -98,10 +98,12 @@ def build_points_table(outcomes):
 
 
 def get_semifinals_teams(group_to_team_to_points):
+    P_TIE_BREAKER = 0.1
+
     def get_top2_teams(team_to_points):
         sorted_team_points = sorted(
             team_to_points.items(),
-            key=lambda x: -x[1],
+            key=lambda x: -x[1] + random.random() * P_TIE_BREAKER,
         )
         return [
             sorted_team_points[0][0],
