@@ -159,8 +159,10 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
     infographic.subheader('2021 ICC Men\'s T20 World Cup')
 
     infographic.supfooter(
-        f'* Based on {N_MONTE:,} Monte Carlo Simulations'
-        + ' and time-weighted history of match results',
+        [
+            f'* Based on {N_MONTE:,} Monte Carlo Simulations'
+            + ' and time-weighted history of match results'
+        ],
     )
     infographic.footer('Visualization & Analysis by @nuuuwan')
 

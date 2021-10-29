@@ -39,7 +39,7 @@ def draw_chart_lineups(
     team_to_semi_p = dict(sorted_team_semi_p)
     team_to_final_p = dict(sorted_team_final_p)
 
-    GROUP_PADDING = 0.1
+    GROUP_PADDING = 0.05
     GROUP_HEIGHT = 1 - GROUP_PADDING * 2
     ITEM_HEIGHT = GROUP_HEIGHT * 0.5 / 7
     X_GROUP = 0.25
@@ -88,7 +88,7 @@ def draw_chart_lineups(
             team_str += f' ({points_min} to {points_max})'
             draw_team_label(X_GROUP, y_team, team, team_str)
 
-    SEMI_PADDING = 0.2
+    SEMI_PADDING = 0.1
     SEMI_HEIGHT = 1 - SEMI_PADDING * 2
     X_SEMI = 0.5
     semi_to_teams = {
@@ -116,7 +116,7 @@ def draw_chart_lineups(
             team_str += f' ({p:.0%})'
             draw_team_label(X_SEMI, y_team, team, team_str)
 
-    FINAL_PADDING = 0.3
+    FINAL_PADDING = 0.2
     FINAL_HEIGHT = 1 - FINAL_PADDING * 2
     X_FINAL = 0.75
     i_final = 1
@@ -141,25 +141,13 @@ def draw_chart_lineups(
     infographic.subheader(f'Most Likely Outcomes* · {date_str}')
 
     infographic.supfooter(
-        f'* Based on {N_MONTE:,} Monte Carlo Simulations'
-        + ' and time-weighted history of match results',
+        [
+            f'* Based on {N_MONTE:,} Monte Carlo Simulations'
+            + ' and time-weighted history of match results',
+            f'** {CONFIDENCE:.0%} confidence intervals for group stage points',
+            '*** Probability of reaching stage',
+        ]
     )
-
-    # plt.annotate(
-    #     f'** {CONFIDENCE:.0%} confidence intervals for group stage points',
-    #     (0.35, 0.11),
-    #
-    #     ha='left',
-    #     font_size=6,
-    # )
-    #
-    # plt.annotate(
-    #     '*** Probability of reaching stage',
-    #     (0.35, 0.08),
-    #
-    #     ha='left',
-    #     font_size=6,
-    # )
 
     infographic.footer('Visualization & Analysis by @nuuuwan')
     infographic.save('/tmp/cricket_mens_t20_wc_2021.group_stage.png')

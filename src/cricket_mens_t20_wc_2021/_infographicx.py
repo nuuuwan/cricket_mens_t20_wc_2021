@@ -7,6 +7,7 @@ X_MID = 0.5
 Y_HEADER = 0.04
 FONT_SIZE_HEADER = 12
 Y_SUBHEADER = 0.09
+Y_SUBHEADER_GAP = 0.03
 FONT_SIZE_SUBHEADER = 8
 PADDING = 0.15
 
@@ -83,12 +84,17 @@ class Infographic:
             font_size=FONT_SIZE_SUBHEADER,
         )
 
-    def supfooter(self, text):
-        self.text_inner(
-            text,
-            (X_MID, 1 - Y_SUBHEADER),
-            font_size=FONT_SIZE_SUBHEADER,
-        )
+    def supfooter(self, text_list):
+        n_text_list = len(text_list)
+        for i, text in enumerate(text_list):
+            self.text_inner(
+                text,
+                (
+                    X_MID,
+                    1 - Y_SUBHEADER + (i + 1 - n_text_list) * Y_SUBHEADER_GAP,
+                ),
+                font_size=FONT_SIZE_SUBHEADER,
+            )
 
     def footer(self, text):
         self.text_inner(
