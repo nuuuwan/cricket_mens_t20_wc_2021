@@ -32,7 +32,7 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
         alpha = 0.2 if 'Pre-Match' in split else 1.0
         bars = ax.bar(x=labels, height=sizes_p, color=colors, alpha=alpha)
 
-        ax.bar_label(bars, fmt='%4.2g%%', fontsize=8, alpha=alpha)
+        ax.bar_label(bars, fmt='%4.1f%%', fontsize=8, alpha=alpha)
         ax.get_yaxis().set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)

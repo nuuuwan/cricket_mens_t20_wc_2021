@@ -53,13 +53,13 @@ def store_tweet_text():
 
 {blurb_yesterday}
 
-@T20WorldCup
+@T20WorldCup #Cricket
 
 {_break}
 
 2/ P(Winning) #T20WorldCup
 
-@T20WorldCup
+@T20WorldCup #Cricket
 
 {_break}
 
@@ -69,13 +69,13 @@ def store_tweet_text():
 
 {blurb_today}
 
-@T20WorldCup
+@T20WorldCup #Cricket
 
 {_break}
 
 4/ Most Likely #T20WorldCup Outcomes
 
-@T20WorldCup
+@T20WorldCup #Cricket
 
 {_break}
 
@@ -83,7 +83,7 @@ def store_tweet_text():
 
 As you know, I'm not a betting man, but here's what the betting markets say about P(Winning).
 
-@T20WorldCup
+@T20WorldCup #Cricket
 
 {_break}
 
@@ -97,7 +97,7 @@ https://github.com/nuuuwan/cricket_mens_t20_wc_2021.
 
 Feel free to fork/comment/report issues.
 
-@T20WorldCup @GitHub @ThePSF
+@T20WorldCup @GitHub @ThePSF #Cricket
 
 {_break}
 

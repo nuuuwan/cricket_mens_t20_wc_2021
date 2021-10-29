@@ -1,6 +1,6 @@
 """Constants."""
 
-N_MONTE = 1000
+N_MONTE = 100_000
 DPI_IMAGE_RESOLUTION = 600
 
 
