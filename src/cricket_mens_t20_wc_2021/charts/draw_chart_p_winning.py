@@ -1,17 +1,13 @@
-import matplotlib.pyplot as plt
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import (
-    N_MONTE,
-    TEAM_TO_COLOR,
-    DPI_IMAGE_RESOLUTION,
-)
+from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
+from cricket_mens_t20_wc_2021._infographicx import Infographic
 
 
 def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
     n_rows = len(split_to_sorted_team_semi_p.keys())
-    n_cols = 1
-    fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols)
+    infographic = Infographic(n_rows=n_rows)
+    infographic.hide_box()
 
     for i_split, (split, sorted_team_x_p) in enumerate(
         split_to_sorted_team_semi_p.items()
@@ -25,59 +21,27 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
             sizes.append(p)
             colors.append(TEAM_TO_COLOR[team])
         sizes_p = list(map(lambda size: size * 100, sizes))
-        if n_rows > 1:
-            ax = axes[i_split]
-        else:
-            ax = axes
-        alpha = 0.2 if 'Pre-Match' in split else 1.0
-        bars = ax.bar(x=labels, height=sizes_p, color=colors, alpha=alpha)
+        max_size_p = max(sizes_p)
+        ax = infographic.get_ax(i_split, 0)
 
-        ax.bar_label(bars, fmt='%4.1f%%', fontsize=8, alpha=alpha)
-        ax.get_yaxis().set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.spines['bottom'].set_visible(False)
-        ax.spines['left'].set_visible(False)
-        plt.subplots_adjust(bottom=0.2, top=0.8)
-        ax.set_title(
-            split, fontsize=6, loc='right', y=0.5, ha='right', alpha=alpha
-        )
-
-    fig.set_size_inches(8, 4.5)
-    fig.tight_layout(pad=2.9)
-
-    if 'oddschecker' in file_id:
-        plt.figtext(
-            0.5,
-            0.05,
-            '* Data from www.oddschecker.com',
-            ha='center',
-            fontsize=6,
-        )
-    else:
-        plt.figtext(
-            0.5,
-            0.05,
-            f'* Based on {N_MONTE:,} Monte Carlo Simulations'
-            + ' and time-weighted history of match results',
-            ha='center',
-            fontsize=6,
-        )
-
-    plt.figtext(
-        0.5,
-        0.02,
-        'Visualization & Analysis by @nuuuwan',
-        fontsize=8,
-        ha='center',
-    )
+        ax.set_title(split, fontsize=6, loc='right', y=0.5, ha='right')
+        bars = ax.bar(x=labels, height=sizes_p, color=colors)
+        ax.bar_label(bars, fmt='%4.1f%%', fontsize=8)
+        ax.tick_params(axis='x', labelsize=6)
+        ax.set_ylim([0, max_size_p * 1.2])
 
     date_str = timex.format_time(timex.get_unixtime(), '%b %d')
-    plt.suptitle(
-        '2021 ICC Men\'s T20 World Cup' + f' · P({title})* · {date_str}',
-    )
+    infographic.header(f'P({title})* · {date_str}')
+    infographic.subheader('2021 ICC Men\'s T20 World Cup')
 
-    image_file = f'/tmp/cricket_mens_t20_wc_2021.{file_id}.png'
-    fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
+    if 'oddschecker' in file_id:
+        supfooter_text = '* Data from www.oddschecker.com'
+    else:
+        supfooter_text = (
+            f'* Based on {N_MONTE:,} Monte Carlo Simulations'
+            + ' and time-weighted history of match results'
+        )
+    infographic.supfooter([supfooter_text])
+    infographic.footer('Visualization & Analysis by @nuuuwan')
 
-    plt.close()
+    infographic.save(f'/tmp/cricket_mens_t20_wc_2021.{file_id}.png')

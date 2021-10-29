@@ -1,12 +1,11 @@
 from utils import timex
 
 from cricket_mens_t20_wc_2021._constants import N_MONTE
-from cricket_mens_t20_wc_2021._utils import to_long_name
 from cricket_mens_t20_wc_2021._infographicx import Infographic
+from cricket_mens_t20_wc_2021._utils import to_long_name
 
-CHAR_WIN = '✓'
-CHAR_NOT_SURE = '?'
-CHAR_LOSE = '✗'
+CHAR_WIN = 'WIN'
+CHAR_LOSE = 'LOSE'
 STR_GAP = ';'
 
 
@@ -76,12 +75,13 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
     # view ----------------------------------------------------------------
 
     infographic = Infographic()
+    infographic.hide_axis()
 
     p_cum = 0
     EPSILON = 0.0000001
     prev_n_wins = None
 
-    x_offset = 0.3
+    x_offset = 0.25
     n_lines = len(complete_result_id_to_p_semis.keys()) + 7
     n_oppos = len(oppo_list)
     col_width = 0.09
@@ -96,7 +96,7 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
         infographic.text(
             f'{item}',
             (
-                x_offset + 0.1 + i_item * col_width,
+                x_offset + 0.15 + i_item * col_width,
                 i_line * line_height,
             ),
             ha='right',
@@ -142,7 +142,7 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
             infographic.text(
                 f'{item}',
                 (
-                    x_offset + 0.1 + i_item * col_width,
+                    x_offset + 0.15 + i_item * col_width,
                     i_line * line_height,
                 ),
                 ha='right',

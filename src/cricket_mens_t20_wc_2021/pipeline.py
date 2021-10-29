@@ -1,38 +1,22 @@
 import os
-from cricket_mens_t20_wc_2021.historical import (
-    scrape_matches,
-)
 
-from cricket_mens_t20_wc_2021.betting_odds import (
-    store_latest_odds,
-    load_latest_odds,
-)
-
-from cricket_mens_t20_wc_2021.odds import (
-    store_odds_historical,
-    load_odds_historical_index,
-    load_single_odds_historical_index,
-)
-from cricket_mens_t20_wc_2021.wc_agenda import (
-    get_todays_matches,
-    get_yesterdays_matches,
-)
-
+from cricket_mens_t20_wc_2021.betting_odds import (load_latest_odds,
+                                                   store_latest_odds)
+from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import \
+    draw_chart_lineups
+from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import \
+    draw_chart_p_winning
+from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import \
+    draw_cut_on_outcome
+from cricket_mens_t20_wc_2021.charts.draw_single_team_path import \
+    draw_single_team_path
+from cricket_mens_t20_wc_2021.historical import scrape_matches
+from cricket_mens_t20_wc_2021.odds import (load_odds_historical_index,
+                                           load_single_odds_historical_index,
+                                           store_odds_historical)
 from cricket_mens_t20_wc_2021.simulate import simulate_monte_carlo
-
-from cricket_mens_t20_wc_2021.charts.draw_chart_lineups import (
-    draw_chart_lineups,
-)
-from cricket_mens_t20_wc_2021.charts.draw_chart_p_winning import (
-    draw_chart_p_winning,
-)
-from cricket_mens_t20_wc_2021.charts.draw_cut_on_outcome import (
-    draw_cut_on_outcome,
-)
-
-from cricket_mens_t20_wc_2021.charts.draw_single_team_path import (
-    draw_single_team_path,
-)
+from cricket_mens_t20_wc_2021.wc_agenda import (get_todays_matches,
+                                                get_yesterdays_matches)
 
 
 def run():

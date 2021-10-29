@@ -2,12 +2,9 @@ import statistics
 
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import (
-    N_MONTE,
-    TEAM_TO_COLOR,
-)
-from cricket_mens_t20_wc_2021._utils import to_long_name
+from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
 from cricket_mens_t20_wc_2021._infographicx import Infographic
+from cricket_mens_t20_wc_2021._utils import to_long_name
 
 CONFIDENCE = 0.9
 
@@ -20,6 +17,7 @@ def draw_chart_lineups(
     sorted_team_final_p,
 ):
     infographic = Infographic()
+    infographic.hide_axis()
 
     RADIUS = 0.01
 
@@ -136,9 +134,9 @@ def draw_chart_lineups(
         team_str += f' ({p:.0%})'
         draw_team_label(X_FINAL, y_team, team, team_str)
 
-    infographic.header('2021 ICC Men\'s T20 World Cup')
     date_str = timex.format_time(timex.get_unixtime(), '%b %d')
-    infographic.subheader(f'Most Likely Outcomes* · {date_str}')
+    infographic.header(f'Most Likely Outcomes* · {date_str}')
+    infographic.subheader('2021 ICC Men\'s T20 World Cup')
 
     infographic.supfooter(
         [

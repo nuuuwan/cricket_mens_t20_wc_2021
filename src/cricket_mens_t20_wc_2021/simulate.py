@@ -1,20 +1,10 @@
 import random
 
-from cricket_mens_t20_wc_2021._constants import (
-    GROUP_1,
-    GROUP_2,
-    GROUPS,
-    N_MONTE,
-    WC_TEAMS,
-)
+from cricket_mens_t20_wc_2021._constants import (GROUP_1, GROUP_2, GROUPS,
+                                                 N_MONTE, WC_TEAMS)
 from cricket_mens_t20_wc_2021._utils import get_group, log
-
-from cricket_mens_t20_wc_2021.odds import (
-    get_p1,
-)
-from cricket_mens_t20_wc_2021.wc_agenda import (
-    load_agenda,
-)
+from cricket_mens_t20_wc_2021.odds import get_p1
+from cricket_mens_t20_wc_2021.wc_agenda import load_agenda
 
 # plt.rcParams['font.sans-serif'] = "Arial"
 

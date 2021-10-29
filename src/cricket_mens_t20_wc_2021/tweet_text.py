@@ -3,11 +3,9 @@ import os
 from utils import filex, timex
 
 from cricket_mens_t20_wc_2021._utils import to_hashtag
-from cricket_mens_t20_wc_2021.wc_agenda import (
-    get_last_match_no,
-    get_todays_matches,
-    get_yesterdays_matches,
-)
+from cricket_mens_t20_wc_2021.wc_agenda import (get_last_match_no,
+                                                get_todays_matches,
+                                                get_yesterdays_matches)
 
 TWEET_TEXT_FILE = '/tmp/cricket_mens_t20_wc_2021.tweet.txt'
 
@@ -81,7 +79,7 @@ def store_tweet_text():
 
 5/ @OddsChecker - #T20WorldCup Betting Odds
 
-As you know, I'm not a betting man, but here's what the betting markets say about P(Winning).
+I'm no betting man, but here's what the betting markets say about P(Winning).
 
 @T20WorldCup #Cricket
 
