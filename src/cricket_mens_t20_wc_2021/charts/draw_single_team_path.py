@@ -84,7 +84,7 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
     x_offset = 0.3
     n_lines = len(complete_result_id_to_p_semis.keys()) + 7
     n_oppos = len(oppo_list)
-    col_width = 0.07
+    col_width = 0.09
     line_height = 1 / n_lines
     font_size = 7
     sorted_id_and_p = sorted(

@@ -64,3 +64,4 @@
   *  [2021-10-28 09:33PM] Various Refactoring
   *  [2021-10-29 07:31AM] 
   *  [2021-10-29 11:39AM] Added infographix
+  *  [2021-10-29 11:40AM] Added infographix
