@@ -1,7 +1,8 @@
 from utils import timex
 
 from cricket_mens_t20_wc_2021._constants import N_MONTE, TEAM_TO_COLOR
-from cricket_mens_t20_wc_2021._infographicx import Infographic
+from cricket_mens_t20_wc_2021._infographicx import (FONT_SIZE_NORMAL,
+                                                    Infographic)
 
 
 def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
@@ -20,15 +21,23 @@ def draw_chart_p_winning(split_to_sorted_team_semi_p, title, file_id):
             labels.append(team)
             sizes.append(p)
             colors.append(TEAM_TO_COLOR[team])
-        sizes_p = list(map(lambda size: size * 100, sizes))
-        max_size_p = max(sizes_p)
+        max_size = max(sizes)
         ax = infographic.get_ax(i_split, 0)
 
-        ax.set_title(split, fontsize=6, loc='right', y=0.5, ha='right')
-        bars = ax.bar(x=labels, height=sizes_p, color=colors)
-        ax.bar_label(bars, fmt='%4.1f%%', fontsize=8)
-        ax.tick_params(axis='x', labelsize=6)
-        ax.set_ylim([0, max_size_p * 1.2])
+        ax.set_title(
+            split, fontsize=FONT_SIZE_NORMAL, loc='right', y=0.5, ha='right'
+        )
+        bars = ax.bar(x=labels, height=sizes, color=colors)
+        labels = list(
+            map(
+                lambda size: f'{size:.1%}',
+                sizes,
+            )
+        )
+
+        ax.bar_label(bars, labels=labels, fontsize=FONT_SIZE_NORMAL)
+        ax.tick_params(axis='x', labelsize=FONT_SIZE_NORMAL)
+        ax.set_ylim([0, max_size * 1.15])
 
     date_str = timex.format_time(timex.get_unixtime(), '%b %d')
     infographic.header(f'P({title})* · {date_str}')

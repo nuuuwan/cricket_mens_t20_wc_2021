@@ -69,3 +69,4 @@
   *  [2021-10-29 12:08PM] Infographic for lineups
   *  [2021-10-29 12:17PM] TODO p_winning chart
   *  [2021-10-29 01:46PM] Updated font
+  *  [2021-10-29 01:56PM] Fixed percentage bugs
