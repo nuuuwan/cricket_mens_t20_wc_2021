@@ -63,3 +63,4 @@
   *  [2021-10-28 09:28PM] Removed redundent code in simulate
   *  [2021-10-28 09:33PM] Various Refactoring
   *  [2021-10-29 07:31AM] 
+  *  [2021-10-29 11:39AM] Added infographix

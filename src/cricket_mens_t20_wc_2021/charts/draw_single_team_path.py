@@ -1,8 +1,8 @@
-import matplotlib.pyplot as plt
 from utils import timex
 
-from cricket_mens_t20_wc_2021._constants import DPI_IMAGE_RESOLUTION, N_MONTE
+from cricket_mens_t20_wc_2021._constants import N_MONTE
 from cricket_mens_t20_wc_2021._utils import to_long_name
+from cricket_mens_t20_wc_2021._infographicx import Infographic
 
 CHAR_WIN = '✓'
 CHAR_NOT_SURE = '?'
@@ -75,8 +75,7 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
 
     # view ----------------------------------------------------------------
 
-    fig = plt.gcf()
-    fig.set_size_inches(8, 4.5)
+    infographic = Infographic()
 
     p_cum = 0
     EPSILON = 0.0000001
@@ -85,9 +84,8 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
     x_offset = 0.3
     n_lines = len(complete_result_id_to_p_semis.keys()) + 7
     n_oppos = len(oppo_list)
-    PADDING = 0.15
     col_width = 0.07
-    line_height = (1 - PADDING * 2) / n_lines
+    line_height = 1 / n_lines
     font_size = 7
     sorted_id_and_p = sorted(
         complete_result_id_to_p_semis.items(),
@@ -95,26 +93,24 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
     )
     i_line = 0
     for i_item, item in enumerate(oppo_list + ['P(Semis)', 'Cumulative P.']):
-        plt.annotate(
+        infographic.text(
             f'{item}',
             (
                 x_offset + 0.1 + i_item * col_width,
-                (1 - PADDING) - i_line * line_height,
+                i_line * line_height,
             ),
-            xycoords='figure fraction',
             ha='right',
-            fontsize=font_size / max(1, len(item) / 8),
+            font_size=font_size / max(1, len(item) / 8),
         )
     i_line += 1
     for complete_result_id, p_semis in sorted_id_and_p:
         n_wins = get_wins(complete_result_id)
         if n_wins != prev_n_wins:
-            plt.annotate(
+            infographic.text(
                 f'{n_wins} Wins',
-                (x_offset, (1 - PADDING) - (1 + i_line) * line_height),
-                xycoords='figure fraction',
+                (x_offset, (1 + i_line) * line_height),
                 ha='left',
-                fontsize=font_size,
+                font_size=font_size,
             )
             i_line += 1
         prev_n_wins = n_wins
@@ -143,56 +139,29 @@ def draw_single_team_path(team_0, outcomes_list, semi_finals_teams_list):
                 color = 'red'
             else:
                 color = 'orange'
-            plt.annotate(
+            infographic.text(
                 f'{item}',
                 (
                     x_offset + 0.1 + i_item * col_width,
-                    (1 - PADDING) - i_line * line_height,
+                    i_line * line_height,
                 ),
-                xycoords='figure fraction',
                 ha='right',
-                fontsize=font_size,
+                font_size=font_size,
                 color=color,
             )
         i_line += 1
 
-    plt.annotate(
-        '2021 ICC Men\'s T20 World Cup',
-        (0.5, 0.97),
-        xycoords='figure fraction',
-        ha='center',
-        fontsize=9,
-    )
     date_str = timex.format_time(timex.get_unixtime(), '%b %d')
     team_long_name = to_long_name(team_0)
-    plt.annotate(
+    infographic.header(
         f'Path Ahead for {team_long_name}* · {date_str}',
-        (0.5, 0.91),
-        xycoords='figure fraction',
-        ha='center',
-        fontsize=15,
     )
+    infographic.subheader('2021 ICC Men\'s T20 World Cup')
 
-    plt.annotate(
+    infographic.supfooter(
         f'* Based on {N_MONTE:,} Monte Carlo Simulations'
         + ' and time-weighted history of match results',
-        (0.5, 0.08),
-        xycoords='figure fraction',
-        ha='center',
-        fontsize=6,
     )
+    infographic.footer('Visualization & Analysis by @nuuuwan')
 
-    plt.annotate(
-        'Visualization & Analysis by @nuuuwan',
-        (0.5, 0.04),
-        xycoords='figure fraction',
-        ha='center',
-        fontsize=9,
-    )
-
-    plt.axis('off')
-
-    image_file = f'/tmp/cricket_mens_t20_wc_2021.path.{team_0}.png'
-    fig.savefig(image_file, dpi=DPI_IMAGE_RESOLUTION)
-
-    plt.close()
+    infographic.save(f'/tmp/cricket_mens_t20_wc_2021.path.{team_0}.png')
